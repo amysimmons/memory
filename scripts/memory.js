@@ -6,6 +6,7 @@ Game = {
     Game.board = Game.generateBoard(Game.difficulty);
     Game.pairs = [];
     Game.matches = [];
+    Game.over = false;
     Game.initEvents();
   },
 
@@ -88,19 +89,58 @@ Game = {
 
   },
 
+  flipTile: function(tile, event){
+
+    tile.flipped = true;
+    event.target.className = "tile flipped";
+
+    Game.pairs.push(tile);
+
+    if(Game.pairs.length == 2){
+      Game.checkForMatch(event);
+    }
+
+  },
+
+  checkForMatch: function(event){
+
+    if(Game.pairs[0].value == Game.pairs[1].value){
+      alert("That's a match!")
+      Game.pairs = [];
+    }else {
+      alert("No match");
+      Game.unflipTiles(event);
+    }
+
+  },
+
+  unflipTiles: function(event){
+
+      for (var i = 0; i < Game.pairs.length; i++) {
+        var tile = Game.pairs[i];
+        tile.flipped = true;
+
+        // debugger
+
+
+        // className = "tile unflipped";
+      };
+
+      Game.pairs = [];
+  },
+
   initEvents: function(){
 
     $('body').on('click', '.tile', function(event) {
 
-      if(Game.board[event.target.yPos][event.target.xPos].matched){
+      var tile = Game.board[event.target.yPos][event.target.xPos];
+
+      if(Game.over){
+        alert("You've successfully matched all tiles");
+      }else if(tile.matched){
         alert("You've already matched this tile");
-      }
-      else if(event.target.classList.contains("unflipped")){
-        Game.board[event.target.yPos][event.target.xPos].flipped = true;
-        event.target.className = "tile flipped";
-      }else{
-        Game.board[event.target.yPos][event.target.xPos].flipped = false;
-        event.target.className = "tile unflipped";
+      }else if(!tile.flipped){
+        Game.flipTile(tile, event);
       }
 
     });
