@@ -75,17 +75,23 @@ Game = {
 
   },
 
-  duplicateValues: function(values){
+  pairAndShuffleValues: function(values){
 
-    return values.concat(values);
+    var duplicateValues = values.concat(values);
+    var shuffledValues = _.shuffle(duplicateValues);
+    Game.values = shuffledValues;
+    return Game.values;
 
   },
 
   getRandomValue: function(values){
 
-    var allValues = Game.duplicateValues(values);
-    var shuffled = _.shuffle(allValues);
-    return shuffled.pop();
+    if(values.length != Game.values.length * 2){
+      Game.values = Game.pairAndShuffleValues(values);
+      return Game.values.pop();
+    }else{
+      return Game.values.pop();
+    }
 
   },
 
