@@ -1,13 +1,14 @@
 Game = {
 
   initialize: function(){
-    Game.difficulty = "easy"
+    Game.difficulty = "easy";
+    Game.values = ["A", "B", "C", "D", "E", "F", "G", "H"];
     Game.board = Game.generateBoard(Game.difficulty);
     Game.pairs = [];
     Game.matches = [];
   },
 
-  generateBoard: function(difficulty){
+  generateBoard: function(difficulty, values){
 
     var tilesAcross;
 
@@ -32,7 +33,7 @@ Game = {
       for (var j = 0; j < tilesAcross; j++) {
         var tile = {
           position: [i, j],
-          value: "X",
+          value: Game.getRandomValue(Game.values),
           flipped: false
         }
         row.push(tile);
@@ -48,6 +49,7 @@ Game = {
   },
 
   renderBoard: function(grid){
+
     var container = document.getElementsByClassName('container')[0];
 
     for (var i = 0; i < grid.length; i++) {
@@ -65,7 +67,19 @@ Game = {
 
       container.appendChild(row);
     };
+
+  },
+
+  duplicateValues: function(values){
+    return values.concat(values);
+  },
+
+  getRandomValue: function(values){
+    var allValues = Game.duplicateValues(values);
+    var shuffled = _.shuffle(allValues);
+    return shuffled.pop();
   }
+
 }
 
 $(document).ready(function(){
