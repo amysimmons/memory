@@ -2,12 +2,12 @@ Game = {
 
   initialize: function(){
     Game.difficulty = "easy"
-    Game.board = Game.renderBoard(Game.difficulty);
+    Game.board = Game.generateBoard(Game.difficulty);
     Game.pairs = [];
     Game.matches = [];
   },
 
-  renderBoard: function(difficulty){
+  generateBoard: function(difficulty){
 
     var tilesAcross;
 
@@ -40,9 +40,31 @@ Game = {
       grid.push(row);
     };
 
-    console.log(grid, 'grid');
+
+    Game.renderBoard(grid);
+
     return grid;
 
+  },
+
+  renderBoard: function(grid){
+    var container = document.getElementsByClassName('container')[0];
+
+    for (var i = 0; i < grid.length; i++) {
+
+      var row = document.createElement('div');
+      row.className = 'row'
+
+      for (var j = 0; j < grid[i].length; j++) {
+        var tile = document.createElement('div');
+        tile.className = grid[i][j].flipped ? 'tile flipped' : 'tile unflipped';
+        var value = document.createTextNode(grid[i][j].value);
+        tile.appendChild(value)
+        row.appendChild(tile);
+      };
+
+      container.appendChild(row);
+    };
   }
 }
 
