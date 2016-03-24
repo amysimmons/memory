@@ -1,3 +1,7 @@
+body {
+  font-family: 'arial'
+}
+
 .row {
   display: block;
 }
@@ -6,5 +10,17 @@
   display: inline-block;
   width: 100px;
   height: 100px;
-  border: 1px solid #000;
+  border: 1px solid #fff;
+  font-size: 60px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.flipped {
+  color: green;
+}
+
+.unflipped {
+  background-color: green;
+  color: green;
 }
