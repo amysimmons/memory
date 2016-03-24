@@ -120,13 +120,16 @@ Game = {
         var tile = Game.pairs[i];
         tile.flipped = true;
 
-        // debugger
-
-
-        // className = "tile unflipped";
+        var domTile = document.getElementsByClassName('row')[tile.position[0]].childNodes[tile.position[1]]
+        domTile.className = "tile unflipped";
       };
 
       Game.pairs = [];
+  },
+
+  updateDom: function(position){
+    console.log(position);
+    console.log('hi')
   },
 
   initEvents: function(){
@@ -141,6 +144,7 @@ Game = {
         alert("You've already matched this tile");
       }else if(!tile.flipped){
         Game.flipTile(tile, event);
+
       }
 
     });
