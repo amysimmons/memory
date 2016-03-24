@@ -106,6 +106,7 @@ Game = {
 
     if(Game.pairs[0].value == Game.pairs[1].value){
       alert("That's a match!")
+      //todo: update tile to be matched
       Game.pairs = [];
     }else {
       alert("No match");
@@ -118,7 +119,8 @@ Game = {
 
       for (var i = 0; i < Game.pairs.length; i++) {
         var tile = Game.pairs[i];
-        tile.flipped = true;
+
+        Game.board[tile.position[0]][tile.position[1]].flipped = false;
 
         var domTile = document.getElementsByClassName('row')[tile.position[0]].childNodes[tile.position[1]]
         domTile.className = "tile unflipped";
@@ -137,6 +139,8 @@ Game = {
     $('body').on('click', '.tile', function(event) {
 
       var tile = Game.board[event.target.yPos][event.target.xPos];
+
+      console.log(tile);
 
       if(Game.over){
         alert("You've successfully matched all tiles");
