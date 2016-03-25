@@ -4,7 +4,7 @@ Game = {
     Game.difficulty = "easy";
     Game.values = Game.pairAndShuffle(values);
     Game.board = Game.generateBoard();
-    Game.pairs = [];
+    Game.pair = [];
     Game.matches = [];
     Game.over = false;
     Game.initEvents();
@@ -94,9 +94,9 @@ Game = {
     tile.flipped = true;
     event.target.className = "tile flipped";
 
-    Game.pairs.push(tile);
+    Game.pair.push(tile);
 
-    if(Game.pairs.length == 2){
+    if(Game.pair.length == 2){
       Game.checkForMatch(event);
     }
 
@@ -104,10 +104,25 @@ Game = {
 
   checkForMatch: function(event){
 
-    if(Game.pairs[0].value == Game.pairs[1].value){
-      alert("That's a match!")
-      //todo: update tile to be matched
-      Game.pairs = [];
+    if(Game.pair[0].value == Game.pair[1].value){
+      alert("That's a match!");
+
+      for (var i = 0; i < Game.pair.length; i++) {
+        var tile = Game.pair[i];
+
+        //updates tile to be matched
+        Game.board[tile.position[0]][tile.position[1]].matched = true;
+
+        //pushes the tile into the matches array, used to check for win
+        Game.matches.push(Game.pair[i])
+      };
+
+      //resets pair array to empty
+      Game.pair = [];
+
+      //checks for win
+      Game.checkForWin();
+
     }else {
       alert("No match");
       Game.unflipTiles(event);
@@ -117,8 +132,8 @@ Game = {
 
   unflipTiles: function(event){
 
-      for (var i = 0; i < Game.pairs.length; i++) {
-        var tile = Game.pairs[i];
+      for (var i = 0; i < Game.pair.length; i++) {
+        var tile = Game.pair[i];
 
         Game.board[tile.position[0]][tile.position[1]].flipped = false;
 
@@ -126,12 +141,15 @@ Game = {
         domTile.className = "tile unflipped";
       };
 
-      Game.pairs = [];
+      Game.pair = [];
   },
 
-  updateDom: function(position){
-    console.log(position);
-    console.log('hi')
+  checkForWin: function(){
+
+    if(Game.matches.length == _.flatten(Game.board).length){
+      alert("You're a winner!");
+    }
+
   },
 
   initEvents: function(){
@@ -139,8 +157,6 @@ Game = {
     $('body').on('click', '.tile', function(event) {
 
       var tile = Game.board[event.target.yPos][event.target.xPos];
-
-      console.log(tile);
 
       if(Game.over){
         alert("You've successfully matched all tiles");
