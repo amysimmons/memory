@@ -1,5 +1,27 @@
 body {
-  font-family: 'arial'
+  font-family: 'arial';
+  margin: 0;
+}
+
+.container{
+  width: 100%;
+}
+
+.menu-container{
+  width: 18%;
+  display: inline-block;
+  padding: 2em;
+  box-sizing: border-box;
+}
+
+.menu-container ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.game-container{
+  width: 79%;
+  display: inline-block;
 }
 
 .row {

@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 Game = {
 
   initialize: function(values){
@@ -7,7 +9,6 @@ Game = {
     Game.pair = [];
     Game.matches = [];
     Game.over = false;
-    Game.initEvents();
   },
 
   generateBoard: function(){
@@ -47,13 +48,15 @@ Game = {
 
     Game.renderBoard(grid);
 
+    console.log(grid)
+
     return grid;
 
   },
 
   renderBoard: function(grid){
 
-    var container = document.getElementsByClassName('container')[0];
+    var container = document.getElementsByClassName('game-container')[0];
 
     for (var i = 0; i < grid.length; i++) {
 
@@ -65,8 +68,9 @@ Game = {
         tile.className = grid[i][j].flipped ? 'tile flipped' : 'tile unflipped';
         tile.xPos = j;
         tile.yPos = i;
-        var value = document.createTextNode(grid[i][j].value);
-        tile.appendChild(value);
+        var image = document.createElement('img');
+        image.src = grid[i][j].value;
+        tile.appendChild(image);
         row.appendChild(tile);
       };
 
@@ -153,6 +157,23 @@ Game = {
 
   },
 
+  fetchGifs: function(show){
+
+    var query = show.split(' ').join('+').toLowerCase();
+    var limit = 8;
+    var embedUrls = [];
+
+    $.get( "http://api.giphy.com/v1/gifs/search?q=" + query + "&limit=" + limit + "&api_key=dc6zaTOxFJmzC")
+      .done(function(data){
+        for (var i = 0; i < data.data.length; i++) {
+          var gif = data.data[i];
+          embedUrls.push(gif.embed_url);
+        };
+        Game.initialize(embedUrls);
+      });
+
+  },
+
   initEvents: function(){
 
     $('body').on('click', '.tile', function(event) {
@@ -170,11 +191,16 @@ Game = {
 
     });
 
+    $('body').on('click', '.menu-item', function(event){
+
+      Game.fetchGifs(event.target.innerHTML);
+
+    });
+
   }
 
 }
 
-$(document).ready(function(){
-  var values = ["A", "B", "C", "D", "E", "F", "G", "H"];
-  Game.initialize(values);
+Game.initEvents();
+
 });
