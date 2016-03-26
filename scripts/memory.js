@@ -148,6 +148,7 @@ Game = {
 
     if(Game.matches.length == _.flatten(Game.board).length){
       alert("You're a winner!");
+      Game.over = true;
     }
 
   },
