@@ -68,9 +68,7 @@ Game = {
         tile.className = grid[i][j].flipped ? 'tile flipped' : 'tile unflipped';
         tile.xPos = j;
         tile.yPos = i;
-        var image = document.createElement('img');
-        image.src = grid[i][j].value;
-        tile.appendChild(image);
+        tile.style.backgroundImage = "url('" + grid[i][j].value + "')";
         row.appendChild(tile);
       };
 
@@ -167,7 +165,7 @@ Game = {
       .done(function(data){
         for (var i = 0; i < data.data.length; i++) {
           var gif = data.data[i];
-          embedUrls.push(gif.embed_url);
+          embedUrls.push(gif.images.original.url);
         };
         Game.initialize(embedUrls);
       });
