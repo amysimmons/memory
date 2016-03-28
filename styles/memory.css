@@ -27,16 +27,18 @@ body {
 .row {
   display: block;
   font-size: 0;
+  width: 100%;
 }
 
 .tile {
   display: inline-block;
-  width: 100px;
-  height: 100px;
   cursor: pointer;
   background-repeat: no-repeat;
   background-position: center;
   border: 1px solid #ececec;
+  position: relative;
+  width: 24%;
+  height: 200px;
 }
 
 .flipped {
