@@ -2,12 +2,14 @@ $(document).ready(function(){
 
 Game = {
 
-  initialize: function(values){
+  initialize: function(theme, values){
     Game.difficulty = "easy";
     Game.values = Game.pairAndShuffle(values);
     Game.board = Game.generateBoard();
     Game.pair = [];
     Game.matches = [];
+    Game.timer = Game.startTimer();
+    Game.theme = theme;
     Game.over = false;
   },
 
@@ -155,9 +157,9 @@ Game = {
 
   },
 
-  fetchGifs: function(show){
+  fetchGifs: function(theme){
 
-    var query = show.split(' ').join('+').toLowerCase();
+    var query = theme.split(' ').join('+').toLowerCase();
     var limit = 8;
     var embedUrls = [];
 
@@ -167,9 +169,14 @@ Game = {
           var gif = data.data[i];
           embedUrls.push(gif.images.original.url);
         };
-        Game.initialize(embedUrls);
+        Game.initialize(theme, embedUrls);
       });
 
+  },
+
+  startTimer: function(){
+    console.log('timer started');
+    return 0;
   },
 
   initEvents: function(){
@@ -191,7 +198,21 @@ Game = {
 
     $('body').on('click', '.menu-item', function(event){
 
-      Game.fetchGifs(event.target.innerHTML);
+      if($('.selected').length > 0){
+        $('.selected')[0].className = "menu-item";
+      }
+
+      event.target.className = "menu-item selected";
+
+
+    });
+
+    $('body').on('click', '.start-game', function(event){
+
+      if($('.selected').length > 0 && Game.theme != "none"){
+          var theme = $('.selected')[0].innerHTML;
+          Game.fetchGifs(theme);
+      }
 
     });
 

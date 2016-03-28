@@ -5,6 +5,8 @@ body {
 
 .container{
   width: 100%;
+  margin: 2em;
+  box-sizing: border-box;
 }
 
 .menu-container{
@@ -12,6 +14,7 @@ body {
   display: inline-block;
   padding: 2em;
   box-sizing: border-box;
+  vertical-align: top;
 }
 
 .menu-container ul {
@@ -47,4 +50,8 @@ body {
 
 .unflipped {
   background-image: none !important;
+}
+
+.selected {
+  color: hotpink;
 }
