@@ -231,21 +231,30 @@ Game = {
 
     });
 
-    $('body').on('click', '.menu-item', function(event){
+    $('body').on('click', '.difficulty', function(event){
 
-      if($('.selected').length > 0){
-        $('.selected')[0].className = "menu-item";
+      if($('.difficulty-selected').length > 0){
+        $('.difficulty-selected')[0].className = "difficulty";
       }
 
-      event.target.className = "menu-item selected";
+      event.target.className = "difficulty difficulty-selected";
 
+    });
+
+    $('body').on('click', '.theme', function(event){
+
+      if($('.theme-selected').length > 0){
+        $('.theme-selected')[0].className = "theme";
+      }
+
+      event.target.className = "theme theme-selected";
 
     });
 
     $('body').on('click', '.start-game', function(event){
 
-      if($('.selected').length > 0 && Game.theme != "none"){
-          var theme = $('.selected')[0].innerHTML;
+      if($('.difficulty-selected').length > 0 && $('.theme-selected').length > 0 && Game.theme != "none"){
+          var theme = $('.theme-selected')[0].innerHTML;
           // Game.fetchGifs(theme);
           Game.initialize();
       }
