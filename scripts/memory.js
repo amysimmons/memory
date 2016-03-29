@@ -4,10 +4,12 @@ Game = {
 
   initialize: function(theme, values){
     Game.difficulty = "easy";
-    Game.values = Game.pairAndShuffle(values);
-    Game.board = Game.generateBoard();
+    // Game.values = Game.pairAndShuffle(values);
+    // Game.board = Game.generateBoard();
     Game.pair = [];
     Game.matches = [];
+    Game.seconds = 0;
+    Game.minutes = 0;
     Game.timer = Game.startTimer();
     Game.theme = theme;
     Game.over = false;
@@ -174,9 +176,30 @@ Game = {
 
   },
 
+  addTime: function(){
+
+    if (Game.seconds <= 60) {
+      Game.seconds++;
+    }
+    else if (Game.seconds > 60 && Game.minutes < 60) {
+      Game.seconds = 0;
+      Game.minutes++;
+    }
+    else {
+      Game.over = false;
+      alert("Out of time");
+    }
+
+    Game.startTimer();
+
+  },
+
   startTimer: function(){
-    console.log('timer started');
-    return 0;
+
+    t = setTimeout(Game.addTime, 1000);
+    $('.seconds')[0].innerHTML = Game.seconds;
+    $('.minutes')[0].innerHTML = Game.minutes;
+
   },
 
   initEvents: function(){
@@ -211,7 +234,8 @@ Game = {
 
       if($('.selected').length > 0 && Game.theme != "none"){
           var theme = $('.selected')[0].innerHTML;
-          Game.fetchGifs(theme);
+          // Game.fetchGifs(theme);
+          Game.initialize();
       }
 
     });
