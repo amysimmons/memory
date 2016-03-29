@@ -180,10 +180,10 @@ Game = {
 
   addTime: function(){
 
-    if (Game.seconds < 60) {
+    if (Game.seconds < 59) {
       Game.seconds++;
     }
-    else if (Game.seconds >= 60 && Game.minutes < 60) {
+    else if (Game.seconds >= 59 && Game.minutes < 60) {
       Game.seconds = 0;
       Game.minutes++;
     }
