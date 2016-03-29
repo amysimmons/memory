@@ -3,6 +3,7 @@ $(document).ready(function(){
 Game = {
 
   initialize: function(theme, values){
+
     Game.difficulty = "easy";
     // Game.values = Game.pairAndShuffle(values);
     // Game.board = Game.generateBoard();
@@ -13,6 +14,7 @@ Game = {
     Game.timer = Game.startTimer();
     Game.theme = theme;
     Game.over = false;
+
   },
 
   generateBoard: function(){
@@ -178,10 +180,10 @@ Game = {
 
   addTime: function(){
 
-    if (Game.seconds <= 60) {
+    if (Game.seconds < 60) {
       Game.seconds++;
     }
-    else if (Game.seconds > 60 && Game.minutes < 60) {
+    else if (Game.seconds >= 60 && Game.minutes < 60) {
       Game.seconds = 0;
       Game.minutes++;
     }
@@ -197,8 +199,18 @@ Game = {
   startTimer: function(){
 
     t = setTimeout(Game.addTime, 1000);
-    $('.seconds')[0].innerHTML = Game.seconds;
-    $('.minutes')[0].innerHTML = Game.minutes;
+
+    if (Game.seconds < 10){
+      $('.seconds')[0].innerHTML = ": " + "0" + Game.seconds;
+    }else {
+      $('.seconds')[0].innerHTML = ": " + Game.seconds;
+    }
+
+    if(Game.minutes < 10){
+      $('.minutes')[0].innerHTML = "0" + Game.minutes;
+    }else {
+      $('.minutes')[0].innerHTML = Game.minutes;
+    }
 
   },
 
