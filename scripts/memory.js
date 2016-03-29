@@ -2,9 +2,10 @@ $(document).ready(function(){
 
 Game = {
 
-  initialize: function(theme, values){
+  initialize: function(values){
 
-    Game.difficulty = "easy";
+    Game.difficulty = "none";
+    Game.theme = "none";
     // Game.values = Game.pairAndShuffle(values);
     // Game.board = Game.generateBoard();
     Game.pair = [];
@@ -12,7 +13,6 @@ Game = {
     Game.seconds = 0;
     Game.minutes = 0;
     Game.timer = Game.startTimer();
-    Game.theme = theme;
     Game.over = false;
 
   },
@@ -161,9 +161,9 @@ Game = {
 
   },
 
-  fetchGifs: function(theme){
+  fetchGifs: function(){
 
-    var query = theme.split(' ').join('+').toLowerCase();
+    var query = Game.theme.split(' ').join('+').toLowerCase();
     var limit = 8;
     var embedUrls = [];
 
@@ -173,7 +173,7 @@ Game = {
           var gif = data.data[i];
           embedUrls.push(gif.images.original.url);
         };
-        Game.initialize(theme, embedUrls);
+        Game.initialize(embedUrls);
       });
 
   },
@@ -254,8 +254,10 @@ Game = {
     $('body').on('click', '.start-game', function(event){
 
       if($('.difficulty-selected').length > 0 && $('.theme-selected').length > 0 && Game.theme != "none"){
-          var theme = $('.theme-selected')[0].innerHTML;
-          // Game.fetchGifs(theme);
+          Game.theme = $('.theme-selected')[0].innerHTML;
+          Game.difficulty = $('.difficulty-selected')[0].innerHTML.toLowerCase();
+
+          // Game.fetchGifs();
           Game.initialize();
       }
 
