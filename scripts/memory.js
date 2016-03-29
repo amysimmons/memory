@@ -2,12 +2,12 @@ $(document).ready(function(){
 
 Game = {
 
-  initialize: function(values){
+  initialize: function(values, difficulty, theme){
 
-    Game.difficulty = "none";
-    Game.theme = "none";
-    // Game.values = Game.pairAndShuffle(values);
-    // Game.board = Game.generateBoard();
+    Game.difficulty = difficulty;
+    Game.theme = theme;
+    Game.values = Game.pairAndShuffle(values);
+    Game.board = Game.generateBoard();
     Game.pair = [];
     Game.matches = [];
     Game.seconds = 0;
@@ -42,7 +42,7 @@ Game = {
       for (var j = 0; j < tilesAcross; j++) {
         var tile = {
           position: [i, j],
-          value: Game.getRandomValue(),
+          // value: Game.getRandomValue(),
           flipped: false,
           matched: false
         }
@@ -85,9 +85,9 @@ Game = {
 
   pairAndShuffle: function(values){
 
-    var duplicateValues = values.concat(values);
-    var shuffledValues = _.shuffle(duplicateValues);
-    return shuffledValues;
+    // var duplicateValues = values.concat(values);
+    // var shuffledValues = _.shuffle(duplicateValues);
+    // return shuffledValues;
 
   },
 
@@ -161,20 +161,20 @@ Game = {
 
   },
 
-  fetchGifs: function(){
+  fetchGifs: function(difficulty, theme){
 
-    var query = Game.theme.split(' ').join('+').toLowerCase();
+    var query = theme.split(' ').join('+').toLowerCase();
     var limit = 8;
     var embedUrls = [];
 
-    $.get( "http://api.giphy.com/v1/gifs/search?q=" + query + "&limit=" + limit + "&api_key=dc6zaTOxFJmzC")
-      .done(function(data){
-        for (var i = 0; i < data.data.length; i++) {
-          var gif = data.data[i];
-          embedUrls.push(gif.images.original.url);
-        };
-        Game.initialize(embedUrls);
-      });
+    // $.get( "http://api.giphy.com/v1/gifs/search?q=" + query + "&limit=" + limit + "&api_key=dc6zaTOxFJmzC")
+    //   .done(function(data){
+    //     for (var i = 0; i < data.data.length; i++) {
+    //       var gif = data.data[i];
+    //       embedUrls.push(gif.images.original.url);
+    //     };
+        Game.initialize(embedUrls, difficulty, theme);
+      // });
 
   },
 
@@ -253,12 +253,11 @@ Game = {
 
     $('body').on('click', '.start-game', function(event){
 
-      if($('.difficulty-selected').length > 0 && $('.theme-selected').length > 0 && Game.theme != "none"){
-          Game.theme = $('.theme-selected')[0].innerHTML;
-          Game.difficulty = $('.difficulty-selected')[0].innerHTML.toLowerCase();
+      if($('.difficulty-selected').length > 0 && $('.theme-selected').length > 0 && Game.board == undefined){
+          var theme = $('.theme-selected')[0].innerHTML;
+          var difficulty = $('.difficulty-selected')[0].innerHTML.toLowerCase();
 
-          // Game.fetchGifs();
-          Game.initialize();
+          Game.fetchGifs(difficulty, theme);
       }
 
     });
