@@ -42,7 +42,7 @@ Game = {
       for (var j = 0; j < tilesAcross; j++) {
         var tile = {
           position: [i, j],
-          // value: Game.getRandomValue(),
+          value: Game.getRandomValue(),
           flipped: false,
           matched: false
         }
@@ -85,9 +85,9 @@ Game = {
 
   pairAndShuffle: function(values){
 
-    // var duplicateValues = values.concat(values);
-    // var shuffledValues = _.shuffle(duplicateValues);
-    // return shuffledValues;
+    var duplicateValues = values.concat(values);
+    var shuffledValues = _.shuffle(duplicateValues);
+    return shuffledValues;
 
   },
 
@@ -167,14 +167,14 @@ Game = {
     var limit = 8;
     var embedUrls = [];
 
-    // $.get( "http://api.giphy.com/v1/gifs/search?q=" + query + "&limit=" + limit + "&api_key=dc6zaTOxFJmzC")
-    //   .done(function(data){
-    //     for (var i = 0; i < data.data.length; i++) {
-    //       var gif = data.data[i];
-    //       embedUrls.push(gif.images.original.url);
-    //     };
+    $.get( "http://api.giphy.com/v1/gifs/search?q=" + query + "&limit=" + limit + "&api_key=dc6zaTOxFJmzC")
+      .done(function(data){
+        for (var i = 0; i < data.data.length; i++) {
+          var gif = data.data[i];
+          embedUrls.push(gif.images.original.url);
+        };
         Game.initialize(embedUrls, difficulty, theme);
-      // });
+      });
 
   },
 
@@ -192,7 +192,9 @@ Game = {
       alert("Out of time");
     }
 
-    Game.startTimer();
+    if(!Game.over){
+      Game.startTimer();
+    }
 
   },
 
@@ -238,6 +240,7 @@ Game = {
       }
 
       event.target.className = "difficulty difficulty-selected";
+
 
     });
 
