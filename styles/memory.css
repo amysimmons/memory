@@ -36,20 +36,48 @@ body {
 .tile {
   display: inline-block;
   cursor: pointer;
-  background-repeat: no-repeat;
-  background-position: center;
-  border: 1px solid #ececec;
   position: relative;
   width: 24%;
   height: 200px;
-}
-
-.flipped {
+  border: 1px solid #ececec;
 
 }
 
-.unflipped {
-  background-image: none !important;
+.front,
+.back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.front,
+.back {
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transition: -webkit-transform 0.5s;
+          transition: transform 0.5s;
+}
+
+.back {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.back {
+  -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+}
+
+.tile.flipped .front {
+  -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+}
+
+.tile.flipped .back {
+  -webkit-transform: rotateY(0);
+          transform: rotateY(0);
 }
 
 .difficulty-selected {

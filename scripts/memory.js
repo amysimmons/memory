@@ -70,11 +70,22 @@ Game = {
       row.className = 'row'
 
       for (var j = 0; j < grid[i].length; j++) {
+
         var tile = document.createElement('div');
         tile.className = grid[i][j].flipped ? 'tile flipped' : 'tile unflipped';
         tile.xPos = j;
         tile.yPos = i;
-        tile.style.backgroundImage = "url('" + grid[i][j].value + "')";
+
+        var front = document.createElement('div');
+        front.className = 'front';
+        front.style.backgroundColor = '#fff'
+
+        var back = document.createElement('div');
+        back.className = 'back';
+        back.style.backgroundImage = "url('" + grid[i][j].value + "')";
+
+        tile.appendChild(front);
+        tile.appendChild(back);
         row.appendChild(tile);
       };
 
@@ -100,7 +111,7 @@ Game = {
   flipTile: function(tile, event){
 
     tile.flipped = true;
-    event.target.className = "tile flipped";
+    event.currentTarget.className = "tile flipped";
 
     Game.pair.push(tile);
 
@@ -220,7 +231,7 @@ Game = {
 
     $('body').on('click', '.tile', function(event) {
 
-      var tile = Game.board[event.target.yPos][event.target.xPos];
+      var tile = Game.board[event.currentTarget.yPos][event.currentTarget.xPos];
 
       if(Game.over){
         alert("You've successfully matched all tiles");
@@ -240,7 +251,6 @@ Game = {
       }
 
       event.target.className = "difficulty difficulty-selected";
-
 
     });
 
