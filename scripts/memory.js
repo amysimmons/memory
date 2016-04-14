@@ -25,11 +25,8 @@ Game = {
       case 'easy':
         tilesAcross = 4;
         break;
-      case 'medium':
-        tilesAcross = 6;
-        break;
       case 'hard':
-        tilesAcross = 8;
+        tilesAcross = 6;
         break;
       default:
         tilesAcross = 4;
@@ -73,12 +70,13 @@ Game = {
 
         var tile = document.createElement('div');
         tile.className = grid[i][j].flipped ? 'tile flipped' : 'tile unflipped';
+        tile.style.width = Game.tileWidth();
         tile.xPos = j;
         tile.yPos = i;
 
         var front = document.createElement('div');
         front.className = 'front';
-        front.style.backgroundColor = '#DE5A51'
+        front.style.backgroundColor = '#77C4D3'
 
         var back = document.createElement('div');
         back.className = 'back';
@@ -143,7 +141,7 @@ Game = {
 
     }else {
 
-      setTimeout(function(){ Game.unflipTiles(event); }, 1000);
+      setTimeout(function(){ Game.unflipTiles(event); }, 2000);
 
     }
 
@@ -223,6 +221,16 @@ Game = {
       $('.minutes')[0].innerHTML = "0" + Game.minutes;
     }else {
       $('.minutes')[0].innerHTML = Game.minutes;
+    }
+
+  },
+
+  tileWidth: function(){
+
+    if(Game.difficulty == "easy"){
+      return 1/4*100-.4 + "%";
+    }else if (Game.difficulty == "hard"){
+      return 1/6*100-.4 + "%";
     }
 
   },
