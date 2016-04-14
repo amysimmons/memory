@@ -1,12 +1,16 @@
 body {
-  font-family: 'arial';
+  background-color: #F2F1ED;
+  color: #999;
   margin: 0;
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2 {
+  color: #2c3e50;
 }
 
 .container{
   width: 100%;
-  margin: 2em;
-  box-sizing: border-box;
 }
 
 .menu-container{
@@ -22,14 +26,62 @@ body {
   padding-left: 0;
 }
 
+.menu-container h2 {
+  font-weight: 500;
+}
+
+.difficulty, .theme {
+  text-transform: uppercase;
+  font-weight: 300;
+  margin-bottom: 0.3em;
+}
+
+.difficulty-selected {
+  color: #DE5A51;
+}
+
+.theme-selected {
+  color: #DE5A51;
+}
+
+
+.start-game{
+  position: relative;
+}
+
+.play {
+  cursor: pointer;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 25px solid #999;
+  display: inline-block;
+}
+
+.play.active{
+  border-left: 25px solid #DE5A51;
+}
+
+.timer {
+  display: inline-block;
+  font-size: 1.2em;
+  font-weight: 300;
+  padding-left: 1em;
+  vertical-align: bottom;
+}
+
+.timer.active {
+  color: #DE5A51;
+}
+
 .game-container{
+  padding: 2em;
+  box-sizing: border-box;
   width: 79%;
   display: inline-block;
 }
 
 .row {
   display: block;
-  font-size: 0;
   width: 100%;
 }
 
@@ -37,14 +89,12 @@ body {
   display: inline-block;
   cursor: pointer;
   position: relative;
-  width: 24%;
+  width: 24.6%;
   height: 200px;
-  border: 1px solid #ececec;
-
+  margin-right: 4px;
 }
 
-.front,
-.back {
+.front, .back {
   position: absolute;
   top: 0;
   left: 0;
@@ -52,12 +102,12 @@ body {
   height: 100%;
 }
 
-.front,
-.back {
+.front, .back {
   -webkit-backface-visibility: hidden;
           backface-visibility: hidden;
   -webkit-transition: -webkit-transform 0.5s;
           transition: transform 0.5s;
+  background-size: cover;
 }
 
 .back {
@@ -80,10 +130,3 @@ body {
           transform: rotateY(0);
 }
 
-.difficulty-selected {
-  color: hotpink;
-}
-
-.theme-selected {
-  color: hotpink;
-}

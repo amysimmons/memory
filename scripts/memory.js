@@ -78,7 +78,7 @@ Game = {
 
         var front = document.createElement('div');
         front.className = 'front';
-        front.style.backgroundColor = '#fff'
+        front.style.backgroundColor = '#DE5A51'
 
         var back = document.createElement('div');
         back.className = 'back';
@@ -124,7 +124,6 @@ Game = {
   checkForMatch: function(event){
 
     if(Game.pair[0].value == Game.pair[1].value){
-      alert("That's a match!");
 
       for (var i = 0; i < Game.pair.length; i++) {
         var tile = Game.pair[i];
@@ -143,8 +142,9 @@ Game = {
       Game.checkForWin();
 
     }else {
-      alert("No match");
-      Game.unflipTiles(event);
+
+      setTimeout(function(){ Game.unflipTiles(event); }, 1000);
+
     }
 
   },
@@ -264,11 +264,14 @@ Game = {
 
     });
 
-    $('body').on('click', '.start-game', function(event){
+    $('body').on('click', '.play', function(event){
 
       if($('.difficulty-selected').length > 0 && $('.theme-selected').length > 0 && Game.board == undefined){
           var theme = $('.theme-selected')[0].innerHTML;
           var difficulty = $('.difficulty-selected')[0].innerHTML.toLowerCase();
+
+          $('.timer').toggleClass('active');
+          $('.play').toggleClass('active');
 
           Game.fetchGifs(difficulty, theme);
       }

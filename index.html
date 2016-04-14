@@ -4,22 +4,21 @@
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/underscore.js"></script>
 <script type="text/javascript" src="scripts/memory.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Roboto:400,500,300,700' rel='stylesheet' type='text/css'>
 <link href='styles/memory.css' rel='stylesheet' type='text/css'>
 <title>Memory</title>
 </head>
 <body>
   <div class="container">
     <div class="menu-container">
-      <h1>Gif memory</h1>
-      <h2>Step 1</h2>
-      <h3>Choose a level</h3>
+      <h1>Memory</h1>
+      <h2>1. Choose a level</h2>
       <ul>
         <li class="difficulty">Easy</li>
         <li class="difficulty">Medium</li>
         <li class="difficulty">Hard</li>
       </ul>
-      <h2>Step 2</h2>
-      <h3>Choose a theme</h3>
+      <h2>2. Choose a theme</h2>
       <ul>
         <li class="theme">Game of Thrones</li>
         <li class="theme">Friends</li>
@@ -33,11 +32,13 @@
         <li class="theme">True Blood</li>
         <li class="theme">The Office UK</li>
       </ul>
-      <h2>Step 3</h2>
-      <button class="start-game">Start game</button>
-      <div class="timer">
-        <span class="minutes"></span>
-        <span class="seconds"></span>
+      <h2>3. Start game</h2>
+      <div class="start-game">
+        <div class="play"></div>
+        <div class="timer">
+          <span class="minutes">00</span>
+          <span class="seconds">: 00</span>
+        </div>
       </div>
     </div>
     <div class="game-container"></div>
