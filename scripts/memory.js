@@ -76,7 +76,7 @@ Game = {
 
         var front = document.createElement('div');
         front.className = 'front';
-        front.style.backgroundColor = '#77C4D3'
+        front.style.backgroundColor = '#fff'
 
         var back = document.createElement('div');
         back.className = 'back';
@@ -245,7 +245,7 @@ Game = {
         alert("You've successfully matched all tiles");
       }else if(tile.matched){
         alert("You've already matched this tile");
-      }else if(!tile.flipped){
+      }else if(!tile.flipped && Game.pair.length < 2){
         Game.flipTile(tile, event);
 
       }

@@ -1,12 +1,12 @@
 body {
-  background-color: #F2F1ED;
-  color: #999;
+  background-color: #ff8067;
+  color: #fff;
   margin: 0;
   font-family: 'Roboto', sans-serif;
 }
 
 h1, h2 {
-  color: #2c3e50;
+  /*color: #abf9ff;*/
 }
 
 .container{
@@ -51,14 +51,14 @@ h1, h2 {
 
 .play {
   cursor: pointer;
-  border-top: 20px solid transparent;
+  /*border-top: 20px solid transparent;
   border-bottom: 20px solid transparent;
-  border-left: 25px solid #999;
+  border-left: 25px solid #999;*/
   display: inline-block;
 }
 
 .play.active{
-  border-left: 25px solid #DE5A51;
+  /*border-left: 25px solid #DE5A51;*/
 }
 
 .timer {
