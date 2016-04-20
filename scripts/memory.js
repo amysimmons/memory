@@ -2,10 +2,9 @@ $(document).ready(function(){
 
 Game = {
 
-  initialize: function(values, difficulty, theme){
+  initialize: function(values, source){
 
-    Game.difficulty = difficulty;
-    Game.theme = theme;
+    Game.source = source;
     Game.values = Game.pairAndShuffle(values);
     Game.board = Game.generateBoard();
     Game.pair = [];
@@ -19,18 +18,7 @@ Game = {
 
   generateBoard: function(){
 
-    var tilesAcross;
-
-    switch (Game.difficulty){
-      case 'easy':
-        tilesAcross = 4;
-        break;
-      case 'hard':
-        tilesAcross = 6;
-        break;
-      default:
-        tilesAcross = 4;
-    }
+    var tilesAcross = 4;
 
     var grid = [];
 
@@ -48,10 +36,7 @@ Game = {
       grid.push(row);
     };
 
-
     Game.renderBoard(grid);
-
-    console.log(grid)
 
     return grid;
 
@@ -70,13 +55,12 @@ Game = {
 
         var tile = document.createElement('div');
         tile.className = grid[i][j].flipped ? 'tile flipped' : 'tile unflipped';
-        tile.style.width = Game.tileWidth();
         tile.xPos = j;
         tile.yPos = i;
 
         var front = document.createElement('div');
         front.className = 'front';
-        front.style.backgroundColor = '#fff'
+        front.style.backgroundColor = '#000'
 
         var back = document.createElement('div');
         back.className = 'back';
@@ -170,21 +154,45 @@ Game = {
 
   },
 
-  fetchGifs: function(difficulty, theme){
+  fetchCards: function(source){
 
-    var query = theme.split(' ').join('+').toLowerCase();
-    var limit = 8;
+    if(source == "instagram"){
+      Game.fetchInstagramCards(source);
+    }else if(source == "giphy"){
+      Game.fetchGiphyCards(source);
+    }
+
+  },
+
+  fetchInstagramCards: function(source){
+
     var embedUrls = [];
 
-    $.get( "http://api.giphy.com/v1/gifs/search?q=" + query + "&limit=" + limit + "&api_key=dc6zaTOxFJmzC")
+    //need to authenticate the instagram user for access token
+
+    $.get( "https://api.instagram.com/v1/tags/nofilter/media/recent?access_token=ACCESS_TOKEN")
       .done(function(data){
         for (var i = 0; i < data.data.length; i++) {
           var gif = data.data[i];
           embedUrls.push(gif.images.original.url);
         };
-        Game.initialize(embedUrls, difficulty, theme);
+        Game.initialize(embedUrls, source);
       });
 
+  },
+
+  fetchGiphyCards: function(source){
+
+    var embedUrls = [];
+
+    $.get( "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC&limit=8")
+      .done(function(data){
+        for (var i = 0; i < data.data.length; i++) {
+          var gif = data.data[i];
+          embedUrls.push(gif.images.original.url);
+        };
+        Game.initialize(embedUrls, source);
+      });
   },
 
   addTime: function(){
@@ -208,6 +216,7 @@ Game = {
   },
 
   startTimer: function(){
+    $('.timer').removeClass('hide');
 
     t = setTimeout(Game.addTime, 1000);
 
@@ -225,12 +234,12 @@ Game = {
 
   },
 
-  tileWidth: function(){
+  cardsSource: function(e){
 
-    if(Game.difficulty == "easy"){
-      return 1/4*100-.4 + "%";
-    }else if (Game.difficulty == "hard"){
-      return 1/6*100-.4 + "%";
+    if(e.classList.contains("giphy")){
+      return "giphy";
+    }else if (e.classList.contains("instagram")){
+      return "instagram";
     }
 
   },
@@ -252,39 +261,14 @@ Game = {
 
     });
 
-    $('body').on('click', '.difficulty', function(event){
+    $('body').on('click', '.logo', function(event){
 
-      if($('.difficulty-selected').length > 0){
-        $('.difficulty-selected')[0].className = "difficulty";
-      }
+      var source = Game.cardsSource(event.currentTarget);
+      $('.menu-container').addClass('hide');
 
-      event.target.className = "difficulty difficulty-selected";
+      Game.fetchCards(source);
 
-    });
-
-    $('body').on('click', '.theme', function(event){
-
-      if($('.theme-selected').length > 0){
-        $('.theme-selected')[0].className = "theme";
-      }
-
-      event.target.className = "theme theme-selected";
-
-    });
-
-    $('body').on('click', '.play', function(event){
-
-      if($('.difficulty-selected').length > 0 && $('.theme-selected').length > 0 && Game.board == undefined){
-          var theme = $('.theme-selected')[0].innerHTML;
-          var difficulty = $('.difficulty-selected')[0].innerHTML.toLowerCase();
-
-          $('.timer').toggleClass('active');
-          $('.play').toggleClass('active');
-
-          Game.fetchGifs(difficulty, theme);
-      }
-
-    });
+    })
 
   }
 
