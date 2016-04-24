@@ -5,14 +5,20 @@ var app = express();
 app.use(express.static(__dirname));
 var redirect_uri = 'http://localhost:8080/handleauth';
 require('dotenv').config();
+var cookieSession = require('cookie-session')
+app.use(cookieSession({
+  name: 'session',
+  keys: ['authorised_user']
+}));
 
-exports.authorize_user = function(req, res) {
+
+app.get('/authorize_user', function(req, res) {
   ig.use({ client_id: process.env.INSTAGRAM_CLIENT_ID,
     client_secret: process.env.INSTAGRAM_CLIENT_SECRET});
   res.redirect(ig.get_authorization_url(redirect_uri));
-};
+});
 
-exports.handleauth = function(req, res) {
+app.get('/handleauth', function(req, res) {
   ig.use({ client_id: process.env.INSTAGRAM_CLIENT_ID,
     client_secret: process.env.INSTAGRAM_CLIENT_SECRET});
 
@@ -22,26 +28,34 @@ exports.handleauth = function(req, res) {
       res.send("Didn't work");
     } else {
       console.log('Yay! Access token is ' + result.access_token);
-      res.send('You made it!!');
+      req.session.authorised_user = result;
+      res.redirect('/');
     }
   });
-};
+});
 
-// This is where you would initially send users to authorize
-app.get('/authorize_user', exports.authorize_user);
-// This is your redirect URI
-app.get('/handleauth', exports.handleauth);
+app.get('/accesstoken', function(req, res){
+  if(req.session.authorised_user == null){
+    res.send(false);
+  }else{
+    res.send(true);
+  }
+});
 
-app.get('/instagram', function(req, res){
-
+app.get('/posts', function(req, res){
   ig.use({ client_id: process.env.INSTAGRAM_CLIENT_ID,
-    client_secret: process.env.INSTAGRAM_CLIENT_SECRET});
+      client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
+      access_token: req.session.authorised_user.access_token});
 
-  var result = ig.user_search('amesimmons', 10, function(err, users, remaining, limit) {
-    console.log(err);
+  ig.user(req.session.authorised_user.user.id, function(err, result, remaining, limit) {
+    if (err){
+      console.log(err.body);
+      return "Could not get user";
+    }else {
+      console.log('user successfully fetched', result);
+      res.send(result);
+    }
   });
-  console.log(result);
-  res.send(result);
 });
 
 app.listen(8080);

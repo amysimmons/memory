@@ -165,24 +165,26 @@ Game = {
   },
 
   fetchInstagramCards: function(source){
-
     var embedUrls = [];
-
-    window.location = "/authorize_user";
-
-    // $.get( "/authorize_user")
-    //   .done(function(data){
-
-    //     debugger
-
-    //     for (var i = 0; i < data.data.length; i++) {
-    //       var gif = data.data[i];
-    //       embedUrls.push(gif.images.original.url);
-    //     };
-    //     Game.initialize(embedUrls, source);
-    //   });
-
-  },
+    console.log('fetching instas')
+    $.get("/accesstoken")
+      .done(function(data){
+        // debugger
+        if (data){
+          $.get( "/posts")
+            .done(function(posts){
+              console.log('posts', posts)
+              // for (var i = 0; i < posts.data.length; i++) {
+              //   var post = posts.data[i];
+              //   embedUrls.push(post);
+              // };
+              // Game.initialize(embedUrls, source);
+            });
+          }else{
+            window.location = "/authorize_user"
+          }
+      });
+    },
 
   fetchGiphyCards: function(source){
 
