@@ -11,7 +11,6 @@ app.use(cookieSession({
   keys: ['authorised_user']
 }));
 
-
 app.get('/authorize_user', function(req, res) {
   ig.use({ client_id: process.env.INSTAGRAM_CLIENT_ID,
     client_secret: process.env.INSTAGRAM_CLIENT_SECRET});
@@ -47,15 +46,26 @@ app.get('/posts', function(req, res){
       client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
       access_token: req.session.authorised_user.access_token});
 
-  ig.user(req.session.authorised_user.user.id, function(err, result, remaining, limit) {
+  ig.user_media_recent(req.session.authorised_user.user.id, 8, function(err, medias, pagination, remaining, limit) {
     if (err){
       console.log(err.body);
       return "Could not get user";
     }else {
-      console.log('user successfully fetched', result);
-      res.send(result);
+      console.log('user successfully fetched', medias);
+      res.send(medias);
     }
   });
+
+  // ig.user(req.session.authorised_user.user.id, function(err, result, remaining, limit) {
+  //   if (err){
+  //     console.log(err.body);
+  //     return "Could not get user";
+  //   }else {
+  //     console.log('user successfully fetched', result);
+  //     res.send(result);
+  //   }
+  // });
+
 });
 
 app.listen(8080);
