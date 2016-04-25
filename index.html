@@ -10,20 +10,34 @@
 <title>Memory</title>
 </head>
 <body>
-  <header>
-    <h1>Memory</h1>
-  </header>
   <div class="container">
+    <header>
+      <h1>Memory Lane</h1>
+      <div class="timer hide">
+        <span class="minutes">00</span>
+        <span class="seconds">: 00</span>
+      </div>
+    </header>
     <div class="menu-container">
-      <h2>Choose your cards</h2>
-      <img class="instagram logo"src="images/instagram-wide.png"/>
-      <img class="giphy logo"src="images/giphy.png"/>
+      <div class="select-card-source">
+        <h2>Choose your cards</h2>
+        <img class="instagram logo"src="images/instagram-wide.png"/>
+        <img class="giphy logo"src="images/giphy.png"/>
+      </div>
+      <div class="select-instagram-username hide">
+        <p>Play with your own Instagram photos</p>
+        <p>Or play with someone else's...</p>
+      </div>
+      <div class="select-giphy-theme hide">
+        <ul>
+          <li>Game Of Thrones</li>
+          <li>House Of Cards</li>
+          <li>Mad Men</li>
+        </ul>
+      </div>
     </div>
-    <div class="timer hide">
-      <span class="minutes">00</span>
-      <span class="seconds">: 00</span>
+    <div class="game-container">
     </div>
-    <div class="game-container"></div>
   </div>
 </body>
 </html>
