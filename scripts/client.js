@@ -249,6 +249,16 @@ Game = {
 
   },
 
+  showOptions: function(source){
+    console.log('show optiojns caleld')
+    $('.select-card-source').addClass('hide');
+    if(source == "instagram"){
+      $('.select-instagram-username').removeClass('hide');
+    }else if(source == "giphy"){
+      $('.select-giphy-theme').removeClass('hide');
+    }
+  },
+
   initEvents: function(){
 
     $('body').on('click', '.tile', function(event) {
@@ -269,9 +279,11 @@ Game = {
     $('body').on('click', '.logo', function(event){
 
       var source = Game.cardsSource(event.currentTarget);
-      $('.menu-container').addClass('hide');
+      //$('.menu-container').addClass('hide');
 
-      Game.fetchCards(source);
+      Game.showOptions(source);
+
+      //Game.fetchCards(source);
 
     })
 
