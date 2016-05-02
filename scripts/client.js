@@ -6,7 +6,7 @@ Game = {
 
     Game.source = source;
     Game.values = Game.pairAndShuffle(values);
-    Game.board = Game.generateBoard();
+    Game.board = Game.generateBoard("cards");
     Game.pair = [];
     Game.matches = [];
     Game.seconds = 0;
@@ -16,25 +16,67 @@ Game = {
 
   },
 
-  generateBoard: function(){
+  generateBoard: function(type, source){
 
     var tilesAcross = 4;
 
     var grid = [];
 
-    for (var i = 0; i < tilesAcross; i++) {
-      var row = [];
-      for (var j = 0; j < tilesAcross; j++) {
-        var tile = {
-          position: [i, j],
-          value: Game.getRandomValue(),
-          flipped: false,
-          matched: false
-        }
-        row.push(tile);
+    if(type=="cardsource"){
+      for (var i = 0; i < tilesAcross; i++) {
+        var row = [];
+        for (var j = 0; j < tilesAcross; j++) {
+          var  tile = {
+            position: [i, j],
+            value: null,
+            option: null,
+            flipped: false,
+            matched: false
+          }
+          row.push(tile);
+        };
+        grid.push(row);
       };
-      grid.push(row);
-    };
+
+      //put the card source options in random divs
+      Game.placeMenuOptions(grid, "cardsource");
+    }
+
+    if(type=="sourcetheme"){
+
+      for (var i = 0; i < tilesAcross; i++) {
+        var row = [];
+        for (var j = 0; j < tilesAcross; j++) {
+          var  tile = {
+            position: [i, j],
+            value: null,
+            option: null,
+            flipped: false,
+            matched: false
+          }
+          row.push(tile);
+        };
+        grid.push(row);
+      };
+      // put the theme choices in random divs
+      Game.placeMenuOptions(grid, source);
+    }
+
+    if(type=="cards"){
+      for (var i = 0; i < tilesAcross; i++) {
+        var row = [];
+        for (var j = 0; j < tilesAcross; j++) {
+          var  tile = {
+            position: [i, j],
+            value: Game.getRandomValue(),
+            flipped: false,
+            matched: false
+          }
+          row.push(tile);
+        };
+        grid.push(row);
+      };
+    }
 
     Game.renderBoard(grid);
 
@@ -42,7 +84,49 @@ Game = {
 
   },
 
+  placeMenuOptions: function(grid, option){
+    if(option=="cardsource"){
+
+      var insta = document.createElement("img");
+      insta.className = "instagram logo";
+      insta.setAttribute('src', '../images/instagram.png');
+
+      var giphy = document.createElement('img');
+      giphy.className = "giphy logo";
+      giphy.setAttribute('src', '../images/giphy.png');
+
+      grid[0][0].option = insta;
+      grid[0][1].option = giphy;
+    }
+    if(option=="instagram"){
+      var own = document.createElement("p");
+      var ownNode = document.createTextNode('Play with your own Instagram pics')
+      own.appendChild(ownNode);
+
+      var other = document.createElement("p");
+      var otherNode = document.createTextNode('Play with someone else\'s Instagram pics')
+      other.appendChild(otherNode);
+
+      grid[0][0].option = own;
+      grid[0][1].option = other;
+    }
+    if(option=="giphy"){
+      var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fail"];
+
+      for (var i = 0; i < themes.length; i++) {
+        var theme = themes[i];
+        var p = document.createElement("p");
+        var pNode = document.createTextNode(theme)
+        p.appendChild(pNode);
+        grid[0][i].option = p;
+      };
+
+    }
+  },
+
   renderBoard: function(grid){
+
+    $('.row').remove();
 
     var container = document.getElementsByClassName('game-container')[0];
 
@@ -60,11 +144,21 @@ Game = {
 
         var front = document.createElement('div');
         front.className = 'front';
-        front.style.backgroundColor = '#000'
+        // if(grid[i][j].value != null){
+        //   front.style.backgroundColor = '#000'
+        // }
+        if(grid[i][j].option != null){
+          var option = grid[i][j].option;
+          front.appendChild(option);
+        }else {
+          front.style.backgroundColor = '#000'
+        }
 
         var back = document.createElement('div');
         back.className = 'back';
-        back.style.backgroundImage = "url('" + grid[i][j].value + "')";
+        if(grid[i][j].value != null){
+          back.style.backgroundImage = "url('" + grid[i][j].value + "')";
+        }
 
         tile.appendChild(front);
         tile.appendChild(back);
@@ -263,16 +357,20 @@ Game = {
 
     $('body').on('click', '.tile', function(event) {
 
-      var tile = Game.board[event.currentTarget.yPos][event.currentTarget.xPos];
+      console.log(Game.seconds);
 
-      if(Game.over){
-        alert("You've successfully matched all tiles");
-      }else if(tile.matched){
-        alert("You've already matched this tile");
-      }else if(!tile.flipped && Game.pair.length < 2){
-        Game.flipTile(tile, event);
+      if(Game.seconds != undefined){
+        var tile = Game.board[event.currentTarget.yPos][event.currentTarget.xPos];
 
+        if(Game.over){
+          alert("You've successfully matched all tiles");
+        }else if(tile.matched){
+          alert("You've already matched this tile");
+        }else if(!tile.flipped && Game.pair.length < 2){
+          Game.flipTile(tile, event);
+        }
       }
+
 
     });
 
@@ -281,11 +379,16 @@ Game = {
       var source = Game.cardsSource(event.currentTarget);
       //$('.menu-container').addClass('hide');
 
-      Game.showOptions(source);
+     // Game.showOptions(source);
+
+      Game.generateBoard("sourcetheme", source);
 
       //Game.fetchCards(source);
 
-    })
+    });
+
+
+    Game.generateBoard("cardsource", null);
 
   }
 
