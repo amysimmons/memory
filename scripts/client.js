@@ -111,8 +111,13 @@ Game = {
     }
     if(option=="giphy"){
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fail"];
+      var input = $('<input>').attr({
+                    id: 'user-giphy-theme',
+                    name: 'user giphy theme',
+                    placeholder: 'cute cat'
+                  }).appendTo('<form>');
 
-      var positions = Game.getRandomGridPos(themes.length, grid);
+      var positions = Game.getRandomGridPos(grid);
 
       for (var i = 0; i < themes.length; i++) {
         var theme = themes[i];
@@ -122,6 +127,8 @@ Game = {
         p.className = "giphy-option"
         grid[positions[i][0]][positions[i][1]].option = p;
       };
+
+      grid[positions[positions.length-1][0]][positions[positions.length-1][1]].option = input[0];
 
     }
   },
@@ -355,10 +362,10 @@ Game = {
     }
   },
 
-  getRandomGridPos: function(numPositions, grid){
+  getRandomGridPos: function(grid){
     var shuffled = _.shuffle(_.flatten(grid));
     var randomGridPositions = [];
-    for (var i = 0; i < numPositions; i++) {
+    for (var i = 0; i < shuffled.length; i++) {
       randomGridPositions.push(shuffled[i].position);
     };
     return randomGridPositions;
@@ -367,10 +374,16 @@ Game = {
   initEvents: function(){
 
     $('body').on('click', '.giphy-option', function(event){
+        var theme = event.currentTarget.innerHTML;
+        Game.fetchGiphyCards(theme);
+    });
 
-
-        var option = event.currentTarget.innerHTML;
-        Game.fetchGiphyCards(option);
+    $('body').on('keypress', '#user-giphy-theme', function( event ) {
+      if ( event.which == 13 ) {
+         event.preventDefault();
+         var theme = event.currentTarget.value;
+         Game.fetchGiphyCards(theme);
+      }
     });
 
     $('body').on('click', '.tile', function(event) {
