@@ -101,20 +101,25 @@ Game = {
       var own = document.createElement("p");
       var ownNode = document.createTextNode('Play with your own Instagram pics')
       own.appendChild(ownNode);
+      own.className = 'insta-option-own';
 
-      var other = document.createElement("p");
-      var otherNode = document.createTextNode('Play with someone else\'s Instagram pics')
-      other.appendChild(otherNode);
+      var positions = Game.getRandomGridPos(grid);
 
-      grid[0][0].option = own;
-      grid[0][1].option = other;
+      var input = $('<input>').attr({
+                    id: 'insta-option-other',
+                    name: 'user giphy theme',
+                    placeholder: 'Enter a username'
+                  }).appendTo('<form>');
+
+      grid[positions[0][0]][positions[0][1]].option = own;
+      grid[positions[1][0]][positions[1][1]].option = input[0];
     }
     if(option=="giphy"){
-      var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fail"];
+      var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fails"];
       var input = $('<input>').attr({
                     id: 'user-giphy-theme',
                     name: 'user giphy theme',
-                    placeholder: 'cute cat'
+                    placeholder: 'Cute cats'
                   }).appendTo('<form>');
 
       var positions = Game.getRandomGridPos(grid);
@@ -153,9 +158,7 @@ Game = {
 
         var front = document.createElement('div');
         front.className = 'front';
-        // if(grid[i][j].value != null){
-        //   front.style.backgroundColor = '#000'
-        // }
+
         if(grid[i][j].option != null){
           var option = grid[i][j].option;
           front.appendChild(option);
@@ -269,13 +272,11 @@ Game = {
 
   fetchInstagramCards: function(source){
     var embedUrls = [];
-    console.log('fetching instas')
     $.get("/accesstoken")
       .done(function(data){
         if (data){
           $.get( "/posts")
             .done(function(posts){
-              console.log('posts', posts)
               for (var i = 0; i < 8; i++) {
                 var post = posts[i].images.standard_resolution.url;
                 embedUrls.push(post);
@@ -288,10 +289,7 @@ Game = {
       });
     },
 
-
-
   fetchGiphyCards: function(source){
-    console.log('fetching giphy carfds')
     var embedUrls = [];
     $.get( "http://api.giphy.com/v1/gifs/search?q=" + source + "&api_key=dc6zaTOxFJmzC&limit=8")
       .done(function(data){
@@ -352,16 +350,6 @@ Game = {
 
   },
 
-  showOptions: function(source){
-    console.log('show optiojns caleld')
-    $('.select-card-source').addClass('hide');
-    if(source == "instagram"){
-      $('.select-instagram-username').removeClass('hide');
-    }else if(source == "giphy"){
-      $('.select-giphy-theme').removeClass('hide');
-    }
-  },
-
   getRandomGridPos: function(grid){
     var shuffled = _.shuffle(_.flatten(grid));
     var randomGridPositions = [];
@@ -386,10 +374,19 @@ Game = {
       }
     });
 
+    $('body').on('click', '.insta-option-own', function(event){
+        Game.fetchInstagramCards('own');
+    });
+
+    $('body').on('keypress', '#insta-option-other', function( event ) {
+      if ( event.which == 13 ) {
+         event.preventDefault();
+         var theme = event.currentTarget.value;
+         Game.fetchInstagramCards(theme);
+      }
+    });
+
     $('body').on('click', '.tile', function(event) {
-
-      console.log(Game.seconds);
-
       if(Game.seconds != undefined){
         var tile = Game.board[event.currentTarget.yPos][event.currentTarget.xPos];
 
@@ -401,26 +398,14 @@ Game = {
           Game.flipTile(tile, event);
         }
       }
-
-
     });
 
     $('body').on('click', '.logo', function(event){
-
       var source = Game.cardsSource(event.currentTarget);
-      //$('.menu-container').addClass('hide');
-
-     // Game.showOptions(source);
-
       Game.generateBoard("sourcetheme", source);
-
-      //Game.fetchCards(source);
-
     });
 
-
     Game.generateBoard("cardsource", null);
-
   }
 
 }
