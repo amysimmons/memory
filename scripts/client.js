@@ -260,16 +260,6 @@ Game = {
 
   },
 
-  fetchCards: function(source){
-
-    if(source == "instagram"){
-      Game.fetchInstagramCards(source);
-    }else if(source == "giphy"){
-      Game.fetchGiphyCards(source);
-    }
-
-  },
-
   fetchInstagramCards: function(source){
     var embedUrls = [];
     $.get("/accesstoken")
