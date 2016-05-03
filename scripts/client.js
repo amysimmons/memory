@@ -2,9 +2,8 @@ $(document).ready(function(){
 
 Game = {
 
-  initialize: function(values, source){
+  initialize: function(values){
 
-    Game.source = source;
     Game.values = Game.pairAndShuffle(values);
     Game.board = Game.generateBoard("cards");
     Game.pair = [];
@@ -113,12 +112,15 @@ Game = {
     if(option=="giphy"){
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fail"];
 
+      var positions = Game.getRandomGridPos(themes.length, grid);
+
       for (var i = 0; i < themes.length; i++) {
         var theme = themes[i];
         var p = document.createElement("p");
         var pNode = document.createTextNode(theme)
         p.appendChild(pNode);
-        grid[0][i].option = p;
+        p.className = "giphy-option"
+        grid[positions[i][0]][positions[i][1]].option = p;
       };
 
     }
@@ -266,7 +268,6 @@ Game = {
         if (data){
           $.get( "/posts")
             .done(function(posts){
-              // debugger
               console.log('posts', posts)
               for (var i = 0; i < 8; i++) {
                 var post = posts[i].images.standard_resolution.url;
@@ -280,17 +281,18 @@ Game = {
       });
     },
 
+
+
   fetchGiphyCards: function(source){
-
+    console.log('fetching giphy carfds')
     var embedUrls = [];
-
-    $.get( "http://api.giphy.com/v1/gifs/trending?api_key=dc6zaTOxFJmzC&limit=8")
+    $.get( "http://api.giphy.com/v1/gifs/search?q=" + source + "&api_key=dc6zaTOxFJmzC&limit=8")
       .done(function(data){
         for (var i = 0; i < data.data.length; i++) {
           var gif = data.data[i];
           embedUrls.push(gif.images.original.url);
         };
-        Game.initialize(embedUrls, source);
+        Game.initialize(embedUrls);
       });
   },
 
@@ -353,7 +355,23 @@ Game = {
     }
   },
 
+  getRandomGridPos: function(numPositions, grid){
+    var shuffled = _.shuffle(_.flatten(grid));
+    var randomGridPositions = [];
+    for (var i = 0; i < numPositions; i++) {
+      randomGridPositions.push(shuffled[i].position);
+    };
+    return randomGridPositions;
+  },
+
   initEvents: function(){
+
+    $('body').on('click', '.giphy-option', function(event){
+
+
+        var option = event.currentTarget.innerHTML;
+        Game.fetchGiphyCards(option);
+    });
 
     $('body').on('click', '.tile', function(event) {
 
