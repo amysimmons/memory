@@ -94,8 +94,10 @@ Game = {
       giphy.className = "giphy logo";
       giphy.setAttribute('src', '../images/giphy.png');
 
-      grid[0][0].option = insta;
-      grid[0][1].option = giphy;
+      var positions = Game.getRandomGridPos(grid);
+
+      grid[positions[0][0]][positions[0][1]].option = insta;
+      grid[positions[1][0]][positions[1][1]].option = giphy;
     }
     if(option=="instagram"){
       var own = document.createElement("p");
@@ -103,7 +105,12 @@ Game = {
       own.appendChild(ownNode);
       own.className = 'insta-option-own';
 
-      var positions = Game.getRandomGridPos(grid);
+
+      var other = document.createElement("div");
+      var otherp = document.createElement("p");
+      var otherNode = document.createTextNode('Play with someone else\'s Instagram pics')
+      otherp.appendChild(otherNode);
+
 
       var input = $('<input>').attr({
                     id: 'insta-option-other',
@@ -111,8 +118,12 @@ Game = {
                     placeholder: 'Enter a username'
                   }).appendTo('<form>');
 
+      other.appendChild(otherp);
+      other.appendChild(input[0]);
+
+      var positions = Game.getRandomGridPos(grid);
       grid[positions[0][0]][positions[0][1]].option = own;
-      grid[positions[1][0]][positions[1][1]].option = input[0];
+      grid[positions[1][0]][positions[1][1]].option = other;
     }
     if(option=="giphy"){
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fails"];
