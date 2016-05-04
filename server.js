@@ -41,31 +41,36 @@ app.get('/accesstoken', function(req, res){
   }
 });
 
-app.get('/posts', function(req, res){
+app.get('/posts/:source', function(req, res){
   ig.use({ client_id: process.env.INSTAGRAM_CLIENT_ID,
       client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
       access_token: req.session.authorised_user.access_token});
 
-  ig.user_media_recent(req.session.authorised_user.user.id, 8, function(err, medias, pagination, remaining, limit) {
-    if (err){
-      console.log(err.body);
-      return "Could not get user";
-    }else {
-      console.log('user successfully fetched', medias);
-      res.send(medias);
-    }
-  });
+  var source = req.params.source;
 
-  // ig.user(req.session.authorised_user.user.id, function(err, result, remaining, limit) {
-  //   if (err){
-  //     console.log(err.body);
-  //     return "Could not get user";
-  //   }else {
-  //     console.log('user successfully fetched', result);
-  //     res.send(result);
-  //   }
-  // });
-
+  if(req.params.source == "own"){
+      ig.user_media_recent(req.session.authorised_user.user.id, 8, function(err, medias, pagination, remaining, limit) {
+        if (err){
+          console.log(err.body);
+          return "Could not get user";
+        }else {
+          console.log('user successfully fetched', medias);
+          res.send(medias);
+        }
+      });
+  }else{
+    //search for user with the username
+    ig.user_search(source, 1, function(err, users, remaining, limit) {
+      if(err){
+        console.log(err.body);
+        return "Could not find user";
+      }else{
+        console.log('user successfully fetched', users);
+        res.send(users);
+        //then get that user's media via the id
+      }
+    });
+  }
 });
 
 app.listen(8080);

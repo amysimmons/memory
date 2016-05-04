@@ -276,7 +276,7 @@ Game = {
     $.get("/accesstoken")
       .done(function(data){
         if (data){
-          $.get( "/posts")
+          $.get( "/posts/"+source)
             .done(function(posts){
               for (var i = 0; i < 8; i++) {
                 var post = posts[i].images.standard_resolution.url;
