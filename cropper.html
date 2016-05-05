@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="scripts/jquery.js"></script>
+<script type="text/javascript" src="scripts/underscore.js"></script>
+<script type="text/javascript" src="scripts/cropper.js"></script>
+<title>Cropper</title>
+</head>
+<body>
+  <div class="app-container">
+    <div class="image-controls">
+      <div><input id="uploadInput" type="file" name="pic" accept="image/*"></div>
+      <button id="crop">Crop</button>
+    </div>
+    <div class="image-container">
+      <canvas id="photo-canvas" width="0" height="0"></canvas>
+      <div id="crop-container"></div>
+    </div>
+  </div>
+</body>
+</html>
