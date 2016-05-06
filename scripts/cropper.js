@@ -31,31 +31,26 @@ $(document).ready(function(){
     var sw = 610;
     var sh = 610;
 
+    var xPos = 610;
+
     while(sy <= canvas.height - sh){
       while (sx <= canvas.width - sw){
         var imageData = ctx.getImageData(sx, sy, sw, sh);
-        renderCrop(imageData);
+        console.log('hello')
+        var cropCanvas = document.createElement('canvas');
+        cropCanvas.height = imageData.height;
+        cropCanvas.width = imageData.width;
+        cropCtx = cropCanvas.getContext('2d');
+        var cropImageData = cropCtx.createImageData(imageData);
+        cropCtx.putImageData(cropImageData, 0, 0);
+        document.body.appendChild(cropCanvas);
         sx += sw;
         id++;
       }
       sy += sh;
       sx = 0;
+      xPos * 610;
     }
-  }
-
-  function renderCrop(imageData){
-    var xPos = 610;
-    var container = $('#crop-container');
-
-    var c = document.createElement('canvas');
-    c.width = imageData.width;
-    c.height = imageData.height;
-    container.append(c);
-
-    var ctx2 = c.getContext("2d");
-    ctx2.putImageData(imageData,xPos,0);
-
-    xPos * 610;
   }
 
   document.getElementById("uploadInput").onchange = function(){
