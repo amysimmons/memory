@@ -54,36 +54,6 @@ $(document).ready(function(){
     }
   }
 
-  function downloadCanvases(event) {
-    event.stopPropagation();
-
-    var link = event.target;
-
-    console.log('called')
-    var canvasId = 1;
-    var link = link;
-
-    while (canvasId <= $('.crop').length) {
-      console.log('while')
-      // debugger
-      var filename = canvasId + '.png';
-      downloadCanvas(link, canvasId, filename);
-      canvasId++;
-    }
-
-      function downloadCanvas(link, canvasId, filename){
-        // debugger
-      link.href = document.getElementById(canvasId.toString()).toDataURL();
-      link.download = filename;
-    }
-
-
-  }
-
-  document.getElementById('download').onclick = function(link){
-     downloadCanvases(link);
-  };
-
   document.getElementById("uploadInput").onchange = function(){
     loadImage(this);
   };
@@ -91,4 +61,5 @@ $(document).ready(function(){
   document.getElementById("crop").onclick = function(){
     slicePhoto();
   };
+
 });
