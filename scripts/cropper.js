@@ -10,7 +10,6 @@ $(document).ready(function(){
     reader.onload = function(e){
       var img = new Image();
       img.onload = function(){
-        console.log(img.height)
         canvas.width = img.width;
         canvas.height = img.height;
         ctx.drawImage(img, 0, 0);
@@ -25,33 +24,57 @@ $(document).ready(function(){
     var canvas = document.getElementById('photo-canvas');
     var ctx = canvas.getContext('2d');
 
-    var id = 0;
     var sx = 0;
     var sy = 0;
     var sw = 610;
     var sh = 610;
+    var count = 1;
 
-    var xPos = 610;
+    while(sy < canvas.height){
+      while (sx < canvas.width){
 
-    while(sy <= canvas.height - sh){
-      while (sx <= canvas.width - sw){
-        var imageData = ctx.getImageData(sx, sy, sw, sh);
-        console.log('hello')
         var cropCanvas = document.createElement('canvas');
-        cropCanvas.height = imageData.height;
-        cropCanvas.width = imageData.width;
-        cropCtx = cropCanvas.getContext('2d');
-        var cropImageData = cropCtx.createImageData(imageData);
-        cropCtx.putImageData(cropImageData, 0, 0);
-        document.body.appendChild(cropCanvas);
+        cropCanvas.width = sw;
+        cropCanvas.height = sh;
+        cropCanvas.id = count;
+        cropCanvas.className = "crop";
+
+        var imageData = ctx.getImageData(sx, sy, sw, sh);
+
+        var cropCtx = cropCanvas.getContext('2d');
+        cropCtx.putImageData(imageData, 0, 0);
+
+        var crops = document.getElementById('image-crops');
+        crops.appendChild(cropCanvas);
         sx += sw;
-        id++;
+        count++
       }
       sy += sh;
       sx = 0;
-      xPos * 610;
     }
   }
+
+  function downloadCanvas(link, canvasId, filename) {
+
+
+
+    console.log('downlaod canvas called')
+      link.href = document.getElementById(canvasId).toDataURL();
+      link.download = filename;
+  }
+
+  document.getElementById('download').addEventListener('click', function() {
+
+      // for (var i = 0; i < $('.crop').length; i++) {
+      //   var crop = $('.crop')[i];
+      //   var filename = crop.id + '.png';
+      //   console.log('downloading')
+        downloadCanvas(this, crop.id, filename);
+        this.trigger( "click" );
+      };
+
+  }, false);
+
 
   document.getElementById("uploadInput").onchange = function(){
     loadImage(this);

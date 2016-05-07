@@ -4,9 +4,11 @@
 <script type="text/javascript" src="scripts/jquery.js"></script>
 <script type="text/javascript" src="scripts/underscore.js"></script>
 <script type="text/javascript" src="scripts/cropper.js"></script>
+<link href='styles/cropper.css' rel='stylesheet' type='text/css'>
 <title>Cropper</title>
 </head>
 <body>
+  <h1>Crop image into squares</h1>
   <div class="app-container">
     <div class="image-controls">
       <div><input id="uploadInput" type="file" name="pic" accept="image/*"></div>
@@ -14,7 +16,10 @@
     </div>
     <div class="image-container">
       <canvas id="photo-canvas" width="0" height="0"></canvas>
-      <canvas id="crop-canvas" width="610" height="610"></canvas>
+    </div>
+    <div id="image-crops">
+      <h1>Crops</h1>
+      <a id="download">Download all crops</a>
     </div>
   </div>
 </body>
