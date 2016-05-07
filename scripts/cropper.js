@@ -54,27 +54,35 @@ $(document).ready(function(){
     }
   }
 
-  function downloadCanvas(link, canvasId, filename) {
+  function downloadCanvases(event) {
+    event.stopPropagation();
 
+    var link = event.target;
 
+    console.log('called')
+    var canvasId = 1;
+    var link = link;
 
-    console.log('downlaod canvas called')
-      link.href = document.getElementById(canvasId).toDataURL();
+    while (canvasId <= $('.crop').length) {
+      console.log('while')
+      // debugger
+      var filename = canvasId + '.png';
+      downloadCanvas(link, canvasId, filename);
+      canvasId++;
+    }
+
+      function downloadCanvas(link, canvasId, filename){
+        // debugger
+      link.href = document.getElementById(canvasId.toString()).toDataURL();
       link.download = filename;
+    }
+
+
   }
 
-  document.getElementById('download').addEventListener('click', function() {
-
-      // for (var i = 0; i < $('.crop').length; i++) {
-      //   var crop = $('.crop')[i];
-      //   var filename = crop.id + '.png';
-      //   console.log('downloading')
-        downloadCanvas(this, crop.id, filename);
-        this.trigger( "click" );
-      };
-
-  }, false);
-
+  document.getElementById('download').onclick = function(link){
+     downloadCanvases(link);
+  };
 
   document.getElementById("uploadInput").onchange = function(){
     loadImage(this);
