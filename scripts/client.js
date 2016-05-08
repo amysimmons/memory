@@ -106,20 +106,25 @@ Game = {
       grid[positions[1][0]][positions[1][1]].option = giphy;
     }
     if(option=="instagram"){
+      var ownDiv = document.createElement("div");
       var own = document.createElement("p");
       var ownNode = document.createTextNode('Play with your own Instagram pics')
       own.appendChild(ownNode);
+      ownDiv.appendChild(own)
       own.className = 'insta-option-own';
-
+      ownDiv.className = 'option';
 
       var other = document.createElement("div");
+      other.className = 'option';
       var otherp = document.createElement("p");
+      otherp.className = 'insta-option-other';
       var otherNode = document.createTextNode('Play with someone else\'s Instagram pics')
       otherp.appendChild(otherNode);
 
 
       var input = $('<input>').attr({
                     id: 'insta-option-other',
+                    type: 'text',
                     name: 'user giphy theme',
                     placeholder: 'Enter a username'
                   }).appendTo('<form>');
@@ -128,7 +133,7 @@ Game = {
       other.appendChild(input[0]);
 
       var positions = Game.getRandomGridPos(grid);
-      grid[positions[0][0]][positions[0][1]].option = own;
+      grid[positions[0][0]][positions[0][1]].option = ownDiv;
       grid[positions[1][0]][positions[1][1]].option = other;
     }
     if(option=="giphy"){
@@ -136,21 +141,29 @@ Game = {
       var input = $('<input>').attr({
                     id: 'user-giphy-theme',
                     name: 'user giphy theme',
+                    type: 'text',
                     placeholder: 'Cute cats'
                   }).appendTo('<form>');
+
+      var inputDiv = document.createElement("div");
+      inputDiv.appendChild(input[0]);
+      inputDiv.className = "option";
 
       var positions = Game.getRandomGridPos(grid);
 
       for (var i = 0; i < themes.length; i++) {
         var theme = themes[i];
+        var div = document.createElement("div");
         var p = document.createElement("p");
-        var pNode = document.createTextNode(theme)
+        var pNode = document.createTextNode(theme);
         p.appendChild(pNode);
-        p.className = "giphy-option"
-        grid[positions[i][0]][positions[i][1]].option = p;
+        div.appendChild(p);
+        p.className = "giphy-option";
+        div.className = "option";
+        grid[positions[i][0]][positions[i][1]].option = div;
       };
 
-      grid[positions[positions.length-1][0]][positions[positions.length-1][1]].option = input[0];
+      grid[positions[positions.length-1][0]][positions[positions.length-1][1]].option = inputDiv;
 
     }
   },
