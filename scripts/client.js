@@ -86,13 +86,19 @@ Game = {
   placeMenuOptions: function(grid, option){
     if(option=="cardsource"){
 
-      var insta = document.createElement("img");
+      var insta = document.createElement("div");
+      var text = document.createElement("p");
+      var textNode = document.createTextNode('Play with Instagram')
+      text.appendChild(textNode);
+      insta.appendChild(text);
       insta.className = "instagram logo";
-      insta.setAttribute('src', '../images/instagram.png');
 
-      var giphy = document.createElement('img');
+      var giphy = document.createElement('div');
+      var text = document.createElement("p");
+      var textNode = document.createTextNode('Play with Giphy')
+      text.appendChild(textNode);
+      giphy.appendChild(text);
       giphy.className = "giphy logo";
-      giphy.setAttribute('src', '../images/giphy.png');
 
       var positions = Game.getRandomGridPos(grid);
 
@@ -154,6 +160,7 @@ Game = {
     $('.row').remove();
 
     var container = document.getElementsByClassName('game-container')[0];
+    var imageCount = 1;
 
     for (var i = 0; i < grid.length; i++) {
 
@@ -173,9 +180,10 @@ Game = {
         if(grid[i][j].option != null){
           var option = grid[i][j].option;
           front.appendChild(option);
-        }else {
-          front.style.backgroundColor = '#000'
         }
+
+        front.style.backgroundImage =  "url('../images/hk/" + imageCount + ".png')";
+        imageCount++;
 
         var back = document.createElement('div');
         back.className = 'back';
