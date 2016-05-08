@@ -7,6 +7,7 @@ body {
 
 .container{
   width: 100%;
+  margin: 50px 0;
 }
 
 .menu-container{
@@ -22,7 +23,7 @@ body {
   position: absolute;
   padding: 0.2em;
   box-sizing: border-box;
-  font-size: 2.5em;
+  font-size: 2em;
   word-spacing: 1000000px;
 }
 
@@ -49,7 +50,13 @@ input:focus {
 }
 
 .insta-option-own, .insta-option-other{
-  font-size: 0.5em;
+  font-size: 0.8em;
+  word-spacing: normal;
+  margin-bottom: 3px;
+}
+
+.giphy-option-other {
+  margin-bottom: 3px;
 }
 
 header{
@@ -76,7 +83,7 @@ header h1 {
 .game-container{
   padding: 2em;
   box-sizing: border-box;
-  width: 79%;
+  width: 60%;
   display: inline-block;
   margin: 0 auto;
   display: inherit;
@@ -91,7 +98,7 @@ header h1 {
   display: inline-block;
   cursor: pointer;
   position: relative;
-  height: 200px;
+  height: 160px;
   margin-right: 4px;
   width: 24%;
 }

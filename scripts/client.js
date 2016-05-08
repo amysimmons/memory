@@ -108,7 +108,7 @@ Game = {
     if(option=="instagram"){
       var ownDiv = document.createElement("div");
       var own = document.createElement("p");
-      var ownNode = document.createTextNode('Play with your own Instagram pics')
+      var ownNode = document.createTextNode('Play with your own pics')
       own.appendChild(ownNode);
       ownDiv.appendChild(own)
       own.className = 'insta-option-own';
@@ -118,7 +118,7 @@ Game = {
       other.className = 'option';
       var otherp = document.createElement("p");
       otherp.className = 'insta-option-other';
-      var otherNode = document.createTextNode('Play with someone else\'s Instagram pics')
+      var otherNode = document.createTextNode('Play with someone else\'s pics')
       otherp.appendChild(otherNode);
 
 
@@ -146,6 +146,14 @@ Game = {
                   }).appendTo('<form>');
 
       var inputDiv = document.createElement("div");
+
+      var yourTheme = document.createElement("p");
+      yourTheme.className = 'giphy-option-other';
+      var yourThemeNode = document.createTextNode('Your theme')
+      yourTheme.appendChild(yourThemeNode);
+
+
+      inputDiv.appendChild(yourTheme);
       inputDiv.appendChild(input[0]);
       inputDiv.className = "option";
 
