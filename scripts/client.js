@@ -2,89 +2,64 @@ $(document).ready(function(){
 
 Game = {
 
-  initialize: function(values){
+  initialize: function(){
+    Game.phase = { cardsSource: true, cardsSourceTheme: false }
+    Game.cardsSource = null;
+    Game.cardsSourceTheme = null;
+    Game.tilesAcross = 4;
+    Game.values = null;
 
-    Game.values = Game.pairAndShuffle(values);
-    Game.board = Game.generateBoard("cards");
+    //Game.pairAndShuffle(values);
+    Game.board = Game.generateBoard();
     Game.pair = [];
     Game.matches = [];
     Game.seconds = 0;
     Game.minutes = 0;
-    Game.timer = Game.startTimer();
+    Game.timer = null;
+    //Game.startTimer();
     Game.over = false;
-
   },
 
-  generateBoard: function(type, source){
-
-    var tilesAcross = 4;
-
+  generateBoard: function(){
     var grid = [];
 
-    if(type=="cardsource"){
-      for (var i = 0; i < tilesAcross; i++) {
-        var row = [];
-        for (var j = 0; j < tilesAcross; j++) {
-          var  tile = {
-            position: [i, j],
-            value: null,
-            option: null,
-            flipped: false,
-            matched: false
-          }
-          row.push(tile);
-        };
-        grid.push(row);
+    for (var i = 0; i < Game.tilesAcross; i++) {
+      var row = [];
+      for (var j = 0; j < Game.tilesAcross; j++) {
+        var  tile = {
+          position: [i, j],
+          value: null,
+          option: null,
+          flipped: false,
+          matched: false
+        }
+        row.push(tile);
       };
+      grid.push(row);
+    };
 
-      //put the card source options in random divs
-      Game.placeMenuOptions(grid, "cardsource");
-    }
-
-    if(type=="sourcetheme"){
-
-      for (var i = 0; i < tilesAcross; i++) {
-        var row = [];
-        for (var j = 0; j < tilesAcross; j++) {
-          var  tile = {
-            position: [i, j],
-            value: null,
-            option: null,
-            flipped: false,
-            matched: false
-          }
-          row.push(tile);
-        };
-        grid.push(row);
-      };
-      // put the theme choices in random divs
-      Game.placeMenuOptions(grid, source);
-    }
-
-    if(type=="cards"){
-      for (var i = 0; i < tilesAcross; i++) {
-        var row = [];
-        for (var j = 0; j < tilesAcross; j++) {
-          var  tile = {
-            position: [i, j],
-            value: Game.getRandomValue(),
-            flipped: false,
-            matched: false
-          }
-          row.push(tile);
-        };
-        grid.push(row);
-      };
-    }
-
-    Game.renderBoard(grid);
-
+    Game.board = grid;
+    Game.populateBoard();
     return grid;
-
   },
 
-  placeMenuOptions: function(grid, option){
-    if(option=="cardsource"){
+  populateBoard: function(){
+    if(!Game.phase.cardsSource || !Game.phase.cardsSourceTheme){
+      Game.placeMenuOptions();
+    }
+    else {
+      //Game.placeCards();
+      //value: Game.getRandomValue(),
+    }
+  },
+
+  placeMenuOptions: function(){
+
+    debugger
+
+    var grid = Game.board;
+
+    if(Game.phase.cardsSource && !Game.phase.cardsSourceTheme){
 
       var insta = document.createElement("div");
       var text = document.createElement("p");
@@ -105,7 +80,7 @@ Game = {
       grid[positions[0][0]][positions[0][1]].option = insta;
       grid[positions[1][0]][positions[1][1]].option = giphy;
     }
-    if(option=="instagram"){
+    if(Game.phase.cardsSourceTheme && Game.cardsSourceTheme =="instagram"){
       var ownDiv = document.createElement("div");
       var own = document.createElement("p");
       var ownNode = document.createTextNode('Play with your own pics')
@@ -136,7 +111,7 @@ Game = {
       grid[positions[0][0]][positions[0][1]].option = ownDiv;
       grid[positions[1][0]][positions[1][1]].option = other;
     }
-    if(option=="giphy"){
+    if(Game.phase.cardsSourceTheme && Game.cardsSourceTheme =="giphy"){
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fails"];
       var input = $('<input>').attr({
                     id: 'user-giphy-theme',
@@ -174,10 +149,13 @@ Game = {
       grid[positions[positions.length-1][0]][positions[positions.length-1][1]].option = inputDiv;
 
     }
+
+    Game.renderBoard();
   },
 
-  renderBoard: function(grid){
+  renderBoard: function(){
 
+    var grid = Game.board;
     $('.row').remove();
 
     var container = document.getElementsByClassName('game-container')[0];
@@ -370,7 +348,7 @@ Game = {
 
   },
 
-  cardsSource: function(e){
+  getCardsSource: function(e){
 
     if(e.classList.contains("giphy")){
       return "giphy";
@@ -391,16 +369,25 @@ Game = {
 
   initEvents: function(){
 
+
+    $('body').on('click', '.logo', function(event){
+      Game.cardsSource = Game.getCardsSource(event.currentTarget);
+      Game.phase.cardsSourceTheme = true;
+      Game.populateBoard();
+      console.log('logo clicked');
+    });
+
     $('body').on('click', '.giphy-option', function(event){
-        var theme = event.currentTarget.innerHTML;
-        Game.fetchGiphyCards(theme);
+        Game.cardsSourceTheme = event.currentTarget.innerHTML;
+        Game.populateBoard();
+        Game.fetchGiphyCards();
     });
 
     $('body').on('keypress', '#user-giphy-theme', function( event ) {
       if ( event.which == 13 ) {
          event.preventDefault();
-         var theme = event.currentTarget.value;
-         Game.fetchGiphyCards(theme);
+         Game.cardsSourceTheme = event.currentTarget.value;
+         Game.fetchGiphyCards();
       }
     });
 
@@ -411,8 +398,8 @@ Game = {
     $('body').on('keypress', '#insta-option-other', function( event ) {
       if ( event.which == 13 ) {
          event.preventDefault();
-         var theme = event.currentTarget.value;
-         Game.fetchInstagramCards(theme);
+         Game.cardsSourceTheme = event.currentTarget.value;
+         Game.fetchInstagramCards();
       }
     });
 
@@ -430,12 +417,7 @@ Game = {
       }
     });
 
-    $('body').on('click', '.logo', function(event){
-      var source = Game.cardsSource(event.currentTarget);
-      Game.generateBoard("sourcetheme", source);
-    });
-
-    Game.generateBoard("cardsource", null);
+    Game.initialize();
   }
 
 }
