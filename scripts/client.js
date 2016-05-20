@@ -55,8 +55,6 @@ Game = {
 
   placeMenuOptions: function(){
 
-    debugger
-
     var grid = Game.board;
 
     if(Game.phase.cardsSource && !Game.phase.cardsSourceTheme){
@@ -81,6 +79,8 @@ Game = {
       grid[positions[1][0]][positions[1][1]].option = giphy;
     }
     if(Game.phase.cardsSourceTheme && Game.cardsSourceTheme =="instagram"){
+
+      debugger
       var ownDiv = document.createElement("div");
       var own = document.createElement("p");
       var ownNode = document.createTextNode('Play with your own pics')
@@ -154,6 +154,8 @@ Game = {
   },
 
   renderBoard: function(){
+
+    debugger
 
     var grid = Game.board;
     $('.row').remove();
