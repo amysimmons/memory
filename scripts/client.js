@@ -43,8 +43,19 @@ Game = {
     return grid;
   },
 
+  clearBoardOptions: function(){
+    debugger
+    for (var i = 0; i < Game.board.length; i++) {
+      var row = Game.board[i];
+      for (var x = 0; x < row.length; x++) {
+        var tile = row[x];
+        tile.option = null;
+      };
+    };
+  },
+
   populateBoard: function(){
-    if(!Game.phase.cardsSource || !Game.phase.cardsSourceTheme){
+    if(Game.cardsSource == null || Game.cardsSourceTheme == null){
       Game.placeMenuOptions();
     }
     else {
@@ -54,7 +65,7 @@ Game = {
   },
 
   placeMenuOptions: function(){
-
+    debugger
     var grid = Game.board;
 
     if(Game.phase.cardsSource && !Game.phase.cardsSourceTheme){
@@ -78,8 +89,8 @@ Game = {
       grid[positions[0][0]][positions[0][1]].option = insta;
       grid[positions[1][0]][positions[1][1]].option = giphy;
     }
-    if(Game.phase.cardsSourceTheme && Game.cardsSourceTheme =="instagram"){
-
+    if(Game.phase.cardsSourceTheme && Game.cardsSource == "instagram"){
+      Game.clearBoardOptions();
       debugger
       var ownDiv = document.createElement("div");
       var own = document.createElement("p");
@@ -111,7 +122,9 @@ Game = {
       grid[positions[0][0]][positions[0][1]].option = ownDiv;
       grid[positions[1][0]][positions[1][1]].option = other;
     }
-    if(Game.phase.cardsSourceTheme && Game.cardsSourceTheme =="giphy"){
+    if(Game.phase.cardsSourceTheme && Game.cardsSource == "giphy"){
+      // debugger
+      Game.clearBoardOptions();
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fails"];
       var input = $('<input>').attr({
                     id: 'user-giphy-theme',
@@ -155,7 +168,7 @@ Game = {
 
   renderBoard: function(){
 
-    debugger
+    // debugger
 
     var grid = Game.board;
     $('.row').remove();
@@ -371,12 +384,10 @@ Game = {
 
   initEvents: function(){
 
-
     $('body').on('click', '.logo', function(event){
       Game.cardsSource = Game.getCardsSource(event.currentTarget);
       Game.phase.cardsSourceTheme = true;
       Game.populateBoard();
-      console.log('logo clicked');
     });
 
     $('body').on('click', '.giphy-option', function(event){
@@ -419,11 +430,12 @@ Game = {
       }
     });
 
-    Game.initialize();
+
   }
 
 }
 
+Game.initialize();
 Game.initEvents();
 
 });
