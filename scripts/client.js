@@ -8,15 +8,12 @@ Game = {
     Game.cardsSourceTheme = null;
     Game.tilesAcross = 4;
     Game.values = null;
-
-    //Game.pairAndShuffle(values);
     Game.board = Game.generateBoard();
     Game.pair = [];
     Game.matches = [];
     Game.seconds = 0;
     Game.minutes = 0;
     Game.timer = null;
-    //Game.startTimer();
     Game.over = false;
   },
 
@@ -44,7 +41,6 @@ Game = {
   },
 
   clearBoardOptions: function(){
-    debugger
     for (var i = 0; i < Game.board.length; i++) {
       var row = Game.board[i];
       for (var x = 0; x < row.length; x++) {
@@ -54,18 +50,23 @@ Game = {
     };
   },
 
+  addCardsToBoard: function(){
+    for (var i = 0; i < Game.board.length; i++) {
+      var row = Game.board[i];
+      for (var x = 0; x < row.length; x++) {
+        var tile = row[x];
+        tile.value = Game.getRandomValue();
+      };
+    };
+  },
+
   populateBoard: function(){
     if(Game.cardsSource == null || Game.cardsSourceTheme == null){
       Game.placeMenuOptions();
     }
-    else {
-      //Game.placeCards();
-      //value: Game.getRandomValue(),
-    }
   },
 
   placeMenuOptions: function(){
-    debugger
     var grid = Game.board;
 
     if(Game.phase.cardsSource && !Game.phase.cardsSourceTheme){
@@ -91,7 +92,6 @@ Game = {
     }
     if(Game.phase.cardsSourceTheme && Game.cardsSource == "instagram"){
       Game.clearBoardOptions();
-      debugger
       var ownDiv = document.createElement("div");
       var own = document.createElement("p");
       var ownNode = document.createTextNode('Play with your own pics')
@@ -123,7 +123,6 @@ Game = {
       grid[positions[1][0]][positions[1][1]].option = other;
     }
     if(Game.phase.cardsSourceTheme && Game.cardsSource == "giphy"){
-      // debugger
       Game.clearBoardOptions();
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fails"];
       var input = $('<input>').attr({
@@ -167,9 +166,6 @@ Game = {
   },
 
   renderBoard: function(){
-
-    // debugger
-
     var grid = Game.board;
     $('.row').remove();
 
@@ -216,21 +212,16 @@ Game = {
   },
 
   pairAndShuffle: function(values){
-
     var duplicateValues = values.concat(values);
     var shuffledValues = _.shuffle(duplicateValues);
     return shuffledValues;
-
   },
 
   getRandomValue: function(){
-
     return Game.values.pop();
-
   },
 
   flipTile: function(tile, event){
-
     tile.flipped = true;
     event.currentTarget.className = "tile flipped";
 
@@ -239,13 +230,10 @@ Game = {
     if(Game.pair.length == 2){
       Game.checkForMatch(event);
     }
-
   },
 
   checkForMatch: function(event){
-
     if(Game.pair[0].value == Game.pair[1].value){
-
       for (var i = 0; i < Game.pair.length; i++) {
         var tile = Game.pair[i];
 
@@ -263,15 +251,11 @@ Game = {
       Game.checkForWin();
 
     }else {
-
       setTimeout(function(){ Game.unflipTiles(event); }, 2000);
-
     }
-
   },
 
   unflipTiles: function(event){
-
       for (var i = 0; i < Game.pair.length; i++) {
         var tile = Game.pair[i];
 
@@ -285,12 +269,17 @@ Game = {
   },
 
   checkForWin: function(){
-
     if(Game.matches.length == _.flatten(Game.board).length){
       alert("You're a winner!");
       Game.over = true;
     }
+  },
 
+  startGame: function(){
+    Game.clearBoardOptions();
+    Game.addCardsToBoard();
+    Game.renderBoard();
+    Game.startTimer();
   },
 
   fetchInstagramCards: function(source){
@@ -304,13 +293,14 @@ Game = {
                 var post = posts[i].images.standard_resolution.url;
                 embedUrls.push(post);
               };
-              Game.initialize(embedUrls, source);
+              Game.values = Game.pairAndShuffle(embedUrls);
+              Game.startGame();
             });
           }else{
             window.location = "/authorize_user"
           }
       });
-    },
+  },
 
   fetchGiphyCards: function(source){
     var embedUrls = [];
@@ -320,12 +310,12 @@ Game = {
           var gif = data.data[i];
           embedUrls.push(gif.images.original.url);
         };
-        Game.initialize(embedUrls);
+        Game.values = Game.pairAndShuffle(embedUrls);
+        Game.startGame();
       });
   },
 
   addTime: function(){
-
     if (Game.seconds < 59) {
       Game.seconds++;
     }
@@ -337,11 +327,9 @@ Game = {
       Game.over = false;
       alert("Out of time");
     }
-
     if(!Game.over){
       Game.startTimer();
     }
-
   },
 
   startTimer: function(){
@@ -360,17 +348,14 @@ Game = {
     }else {
       $('.minutes')[0].innerHTML = Game.minutes;
     }
-
   },
 
   getCardsSource: function(e){
-
     if(e.classList.contains("giphy")){
       return "giphy";
     }else if (e.classList.contains("instagram")){
       return "instagram";
     }
-
   },
 
   getRandomGridPos: function(grid){
@@ -383,7 +368,6 @@ Game = {
   },
 
   initEvents: function(){
-
     $('body').on('click', '.logo', function(event){
       Game.cardsSource = Game.getCardsSource(event.currentTarget);
       Game.phase.cardsSourceTheme = true;
@@ -430,12 +414,11 @@ Game = {
       }
     });
 
+    Game.initialize();
 
   }
-
 }
 
-Game.initialize();
 Game.initEvents();
 
 });
