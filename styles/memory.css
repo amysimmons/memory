@@ -7,7 +7,6 @@ body {
 
 .container{
   width: 100%;
-  margin: 50px 0;
 }
 
 .menu-container{
@@ -185,5 +184,9 @@ footer .powered-by img {
 footer .social-icons a {
   text-decoration: none;
   color: #000;
+}
+
+.strikethrough{
+  text-decoration: line-through;
 }
 

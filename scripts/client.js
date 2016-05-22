@@ -221,7 +221,7 @@ Game = {
 
   checkForWin: function(){
     if(Game.matches.length == _.flatten(Game.board).length){
-      alert("You're a winner!");
+      $('<p>You\'re a winner</p>').appendTo('.message');
       Game.over = true;
     }
   },
@@ -256,7 +256,7 @@ Game = {
     }
     else {
       Game.over = false;
-      alert("Out of time");
+      $('<p>Meep, you\'re out of time</p>').appendTo('.message');
     }
     if(!Game.over){
       Game.startTimer();
@@ -321,11 +321,7 @@ Game = {
       if(Game.seconds > 0){
         var tile = Game.board[event.currentTarget.yPos][event.currentTarget.xPos];
 
-        if(Game.over){
-          alert("You've successfully matched all tiles");
-        }else if(tile.matched){
-          alert("You've already matched this tile");
-        }else if(!tile.flipped && Game.pair.length < 2){
+        if(!Game.over && !tile.matched && !tile.flipped && Game.pair.length < 2){
           Game.flipTile(tile, event);
         }
       }
