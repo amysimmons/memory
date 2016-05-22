@@ -13,7 +13,6 @@ Game = {
     Game.matches = [];
     Game.seconds = 0;
     Game.minutes = 0;
-    Game.timer = null;
     Game.over = false;
   },
 
@@ -401,7 +400,7 @@ Game = {
     });
 
     $('body').on('click', '.tile', function(event) {
-      if(Game.seconds != undefined){
+      if(Game.seconds > 0){
         var tile = Game.board[event.currentTarget.yPos][event.currentTarget.xPos];
 
         if(Game.over){

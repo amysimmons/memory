@@ -89,6 +89,10 @@ header h1 {
   display: inherit;
 }
 
+.info {
+  padding-bottom: 2em;
+}
+
 .row {
   display: block;
   width: 100%;
@@ -146,5 +150,38 @@ header h1 {
 
 .front img {
   width: 100%;
+}
+
+footer {
+  text-align: left;
+  padding: 2em;
+  text-align: center;
+}
+
+.footer-content {
+  display: inline-block;
+}
+
+footer .built-by {
+  border-bottom: 1px solid #ccc;
+}
+
+footer .built-by, .powered-by {
+  padding-bottom: 2em;
+}
+
+
+footer .built-by a {
+  padding: 0 0.5em;
+}
+
+footer .powered-by img {
+  height: 40px;
+  padding: 0 0.5em;
+}
+
+footer .social-icons a {
+  text-decoration: none;
+  color: #000;
 }
 

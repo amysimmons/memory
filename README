@@ -1,3 +1,12 @@
+About
+
+I started building Memory on an eight-hour flight from Sydney to Hong Kong. I was about to embark on a week-long holiday with two girlfriends - so why not build a game about memories!
+
+I use the Instagram and Giphy APIs as sources for the cards. I use a Node Express server on the back end.
+
+I took the photo covering the front of the cards in Soho, Central Hong Kong.
+
+
 Sources
 
 http://callmenick.com/_development/transitions-transforms-animations/1-flipping-card/
