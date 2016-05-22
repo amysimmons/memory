@@ -47,17 +47,17 @@ app.get('/posts/:source', function(req, res){
       access_token: req.session.authorised_user.access_token});
 
   if(req.params.source == "own"){
-      ig.user_media_recent(req.session.authorised_user.user.id, 8, function(err, medias, pagination, remaining, limit) {
-        if (err){
-          console.log(err.body);
-          return "Could not get user";
-        }else {
-          console.log('user successfully fetched', medias);
-          res.send(medias);
-        }
-      });
+    ig.user_media_recent(req.session.authorised_user.user.id, 8, function(err, medias, pagination, remaining, limit) {
+      if (err){
+        console.log(err.body);
+        return "Could not get user";
+      }else {
+        console.log('user successfully fetched', medias);
+        res.send(medias);
+      }
+    });
   }else{
-    ig.media_popular(function(err, medias, remaining, limit) {
+    ig.media_search(40.730610, -73.935242, function(err, medias, remaining, limit) {
       if(err){
         console.log(err.body);
         return "Could not find popular media";
