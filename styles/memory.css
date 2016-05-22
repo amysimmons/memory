@@ -14,7 +14,7 @@ body {
   text-align: center;
 }
 
-.logo, .option {
+.source, .option {
   width: 100%;
   height: 100%;
   opacity: 0.8;
@@ -27,7 +27,7 @@ body {
   word-spacing: 1000000px;
 }
 
-.logo p, .option p{
+.source p, .option p{
   margin-top: 10px
 }
 

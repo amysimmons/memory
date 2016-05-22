@@ -69,48 +69,18 @@ Game = {
     var grid = Game.board;
 
     if(Game.phase.cardsSource && !Game.phase.cardsSourceTheme){
-
-      var insta = document.createElement("div");
-      var text = document.createElement("p");
-      var textNode = document.createTextNode('Play with Instagram')
-      text.appendChild(textNode);
-      insta.appendChild(text);
-      insta.className = "instagram logo";
-
       var giphy = document.createElement('div');
       var text = document.createElement("p");
       var textNode = document.createTextNode('Play with Giphy')
       text.appendChild(textNode);
       giphy.appendChild(text);
-      giphy.className = "giphy logo";
+      giphy.className = "giphy source";
 
       var positions = Game.getRandomGridPos(grid);
 
-      grid[positions[0][0]][positions[0][1]].option = insta;
       grid[positions[1][0]][positions[1][1]].option = giphy;
     }
-    if(Game.phase.cardsSourceTheme && Game.cardsSource == "instagram"){
-      Game.clearBoardOptions();
-      var ownDiv = document.createElement("div");
-      var own = document.createElement("p");
-      var ownNode = document.createTextNode('Play with your own pics')
-      own.appendChild(ownNode);
-      ownDiv.appendChild(own)
-      own.className = 'insta-option-own';
-      ownDiv.className = 'option';
 
-      var otherDiv = document.createElement("div");
-      var other = document.createElement("p");
-      var otherNode = document.createTextNode('Play with other people\'s pics')
-      other.appendChild(otherNode);
-      otherDiv.appendChild(other)
-      other.className = 'insta-option-other';
-      otherDiv.className = 'option';
-
-      var positions = Game.getRandomGridPos(grid);
-      grid[positions[0][0]][positions[0][1]].option = ownDiv;
-      grid[positions[1][0]][positions[1][1]].option = otherDiv;
-    }
     if(Game.phase.cardsSourceTheme && Game.cardsSource == "giphy"){
       Game.clearBoardOptions();
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fails"];
@@ -225,20 +195,12 @@ Game = {
     if(Game.pair[0].value == Game.pair[1].value){
       for (var i = 0; i < Game.pair.length; i++) {
         var tile = Game.pair[i];
-
-        //updates tile to be matched
         Game.board[tile.position[0]][tile.position[1]].matched = true;
-
-        //pushes the tile into the matches array, used to check for win
         Game.matches.push(Game.pair[i])
       };
 
-      //resets pair array to empty
       Game.pair = [];
-
-      //checks for win
       Game.checkForWin();
-
     }else {
       setTimeout(function(){ Game.unflipTiles(event); }, 2000);
     }
@@ -269,27 +231,6 @@ Game = {
     Game.addCardsToBoard();
     Game.renderBoard();
     Game.startTimer();
-  },
-
-  fetchInstagramCards: function(source){
-    debugger
-    var embedUrls = [];
-    $.get("/accesstoken")
-      .done(function(data){
-        if (data){
-          $.get( "/posts/"+source)
-            .done(function(posts){
-              for (var i = 0; i < 8; i++) {
-                var post = posts[i].images.standard_resolution.url;
-                embedUrls.push(post);
-              };
-              Game.values = Game.pairAndShuffle(embedUrls);
-              Game.startGame();
-            });
-          }else{
-            window.location = "/authorize_user"
-          }
-      });
   },
 
   fetchGiphyCards: function(){
@@ -343,8 +284,6 @@ Game = {
   getCardsSource: function(e){
     if(e.classList.contains("giphy")){
       return "giphy";
-    }else if (e.classList.contains("instagram")){
-      return "instagram";
     }
   },
 
@@ -358,7 +297,7 @@ Game = {
   },
 
   initEvents: function(){
-    $('body').on('click', '.logo', function(event){
+    $('body').on('click', '.source', function(event){
       Game.cardsSource = Game.getCardsSource(event.currentTarget);
       Game.phase.cardsSourceTheme = true;
       Game.populateBoard();
@@ -376,14 +315,6 @@ Game = {
          Game.cardsSourceTheme = event.currentTarget.value;
          Game.fetchGiphyCards();
       }
-    });
-
-    $('body').on('click', '.insta-option-own', function(event){
-        Game.fetchInstagramCards('own');
-    });
-
-    $('body').on('click', '.insta-option-other', function( event ) {
-        Game.fetchInstagramCards('other');
     });
 
     $('body').on('click', '.tile', function(event) {
