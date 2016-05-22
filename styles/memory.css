@@ -76,8 +76,10 @@ header h1 {
 .timer {
   font-size: 1.2em;
   font-weight: 300;
-  text-align: center;
-  width: 100%;
+}
+
+.timer, .message{
+  display: inline-block;
 }
 
 .game-container{

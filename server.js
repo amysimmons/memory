@@ -46,8 +46,6 @@ app.get('/posts/:source', function(req, res){
       client_secret: process.env.INSTAGRAM_CLIENT_SECRET,
       access_token: req.session.authorised_user.access_token});
 
-  var source = req.params.source;
-
   if(req.params.source == "own"){
       ig.user_media_recent(req.session.authorised_user.user.id, 8, function(err, medias, pagination, remaining, limit) {
         if (err){
@@ -59,15 +57,13 @@ app.get('/posts/:source', function(req, res){
         }
       });
   }else{
-    //search for user with the username
-    ig.user_search(source, 1, function(err, users, remaining, limit) {
+    ig.media_popular(function(err, medias, remaining, limit) {
       if(err){
         console.log(err.body);
-        return "Could not find user";
+        return "Could not find popular media";
       }else{
-        console.log('user successfully fetched', users);
-        res.send(users);
-        //then get that user's media via the id
+        console.log('popular media successfully fetched', medias);
+        res.send(medias);
       }
     });
   }

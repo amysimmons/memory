@@ -99,27 +99,17 @@ Game = {
       own.className = 'insta-option-own';
       ownDiv.className = 'option';
 
-      var other = document.createElement("div");
-      other.className = 'option';
-      var otherp = document.createElement("p");
-      otherp.className = 'insta-option-other';
-      var otherNode = document.createTextNode('Play with someone else\'s pics')
-      otherp.appendChild(otherNode);
-
-
-      var input = $('<input>').attr({
-                    id: 'insta-option-other',
-                    type: 'text',
-                    name: 'user giphy theme',
-                    placeholder: 'Enter a username'
-                  }).appendTo('<form>');
-
-      other.appendChild(otherp);
-      other.appendChild(input[0]);
+      var otherDiv = document.createElement("div");
+      var other = document.createElement("p");
+      var otherNode = document.createTextNode('Play with other people\'s pics')
+      other.appendChild(otherNode);
+      otherDiv.appendChild(other)
+      other.className = 'insta-option-other';
+      otherDiv.className = 'option';
 
       var positions = Game.getRandomGridPos(grid);
       grid[positions[0][0]][positions[0][1]].option = ownDiv;
-      grid[positions[1][0]][positions[1][1]].option = other;
+      grid[positions[1][0]][positions[1][1]].option = otherDiv;
     }
     if(Game.phase.cardsSourceTheme && Game.cardsSource == "giphy"){
       Game.clearBoardOptions();
@@ -282,6 +272,7 @@ Game = {
   },
 
   fetchInstagramCards: function(source){
+    debugger
     var embedUrls = [];
     $.get("/accesstoken")
       .done(function(data){
@@ -301,9 +292,9 @@ Game = {
       });
   },
 
-  fetchGiphyCards: function(source){
+  fetchGiphyCards: function(){
     var embedUrls = [];
-    $.get( "http://api.giphy.com/v1/gifs/search?q=" + source + "&api_key=dc6zaTOxFJmzC&limit=8")
+    $.get( "http://api.giphy.com/v1/gifs/search?q=" + Game.cardsSourceTheme + "&api_key=dc6zaTOxFJmzC&limit=8")
       .done(function(data){
         for (var i = 0; i < data.data.length; i++) {
           var gif = data.data[i];
@@ -391,12 +382,8 @@ Game = {
         Game.fetchInstagramCards('own');
     });
 
-    $('body').on('keypress', '#insta-option-other', function( event ) {
-      if ( event.which == 13 ) {
-         event.preventDefault();
-         Game.cardsSourceTheme = event.currentTarget.value;
-         Game.fetchInstagramCards();
-      }
+    $('body').on('click', '.insta-option-other', function( event ) {
+        Game.fetchInstagramCards('other');
     });
 
     $('body').on('click', '.tile', function(event) {

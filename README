@@ -14,3 +14,7 @@ http://expressjs.com/
 https://www.instagram.com/developer/authentication/
 https://www.npmjs.com/package/instagram-node
 https://www.npmjs.com/package/cookie-session
+
+
+Devtool for debugging
+devtool src/server.js
