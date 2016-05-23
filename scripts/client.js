@@ -65,60 +65,66 @@ Game = {
     }
   },
 
+  playWithGiphy: function(){
+    var giphy = document.createElement('div')
+    giphy.className = "giphy source";
+    var text = document.createElement("p");
+    var textNode = document.createTextNode('Play with Giphy')
+    text.appendChild(textNode);
+    giphy.appendChild(text);
+    return giphy;
+  },
+
+  ownGiphyTheme: function(){
+    var yourTheme = document.createElement("p");
+    yourTheme.className = 'giphy-option-other';
+    var yourThemeNode = document.createTextNode('Your theme')
+    yourTheme.appendChild(yourThemeNode);
+
+    var input = $('<input>').attr({
+                  id: 'user-giphy-theme',
+                  name: 'user giphy theme',
+                  type: 'text',
+                  placeholder: 'Cute cats'
+                }).appendTo('<form>');
+
+    var container = document.createElement("div");
+    container.className = "option";
+    container.appendChild(yourTheme);
+    container.appendChild(input[0]);
+    return container;
+  },
+
   placeMenuOptions: function(){
     var grid = Game.board;
 
+    //play with giphy
     if(Game.phase.cardsSource && !Game.phase.cardsSourceTheme){
-      var giphy = document.createElement('div');
-      var text = document.createElement("p");
-      var textNode = document.createTextNode('Play with Giphy')
-      text.appendChild(textNode);
-      giphy.appendChild(text);
-      giphy.className = "giphy source";
-
+      var giphy = Game.playWithGiphy();
       var positions = Game.getRandomGridPos(grid);
-
       grid[positions[1][0]][positions[1][1]].option = giphy;
     }
 
+    //choose a giphy theme
     if(Game.phase.cardsSourceTheme && Game.cardsSource == "giphy"){
       Game.clearBoardOptions();
       var themes = ["Game Of Thrones", "House Of Cards", "Skateboard fails"];
-      var input = $('<input>').attr({
-                    id: 'user-giphy-theme',
-                    name: 'user giphy theme',
-                    type: 'text',
-                    placeholder: 'Cute cats'
-                  }).appendTo('<form>');
-
-      var inputDiv = document.createElement("div");
-
-      var yourTheme = document.createElement("p");
-      yourTheme.className = 'giphy-option-other';
-      var yourThemeNode = document.createTextNode('Your theme')
-      yourTheme.appendChild(yourThemeNode);
-
-
-      inputDiv.appendChild(yourTheme);
-      inputDiv.appendChild(input[0]);
-      inputDiv.className = "option";
-
+      var yourTheme = Game.ownGiphyTheme();
       var positions = Game.getRandomGridPos(grid);
 
       for (var i = 0; i < themes.length; i++) {
         var theme = themes[i];
         var div = document.createElement("div");
+        div.className = "option";
         var p = document.createElement("p");
+        p.className = "giphy-option";
         var pNode = document.createTextNode(theme);
         p.appendChild(pNode);
         div.appendChild(p);
-        p.className = "giphy-option";
-        div.className = "option";
         grid[positions[i][0]][positions[i][1]].option = div;
       };
 
-      grid[positions[positions.length-1][0]][positions[positions.length-1][1]].option = inputDiv;
-
+      grid[positions[positions.length-1][0]][positions[positions.length-1][1]].option = yourTheme;
     }
 
     Game.renderBoard();
@@ -132,12 +138,10 @@ Game = {
     var imageCount = 1;
 
     for (var i = 0; i < grid.length; i++) {
-
       var row = document.createElement('div');
       row.className = 'row'
 
       for (var j = 0; j < grid[i].length; j++) {
-
         var tile = document.createElement('div');
         tile.className = grid[i][j].flipped ? 'tile flipped' : 'tile unflipped';
         tile.xPos = j;
@@ -145,12 +149,10 @@ Game = {
 
         var front = document.createElement('div');
         front.className = 'front';
-
         if(grid[i][j].option != null){
           var option = grid[i][j].option;
           front.appendChild(option);
         }
-
         front.style.backgroundImage =  "url('../images/hk/" + imageCount + ".png')";
         imageCount++;
 
