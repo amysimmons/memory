@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-Game = {
+var Game = {
 
   initialize: function(){
     Game.phase = { cardsSource: true, cardsSourceTheme: false }
