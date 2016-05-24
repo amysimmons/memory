@@ -153,7 +153,9 @@ Game = {
           var option = grid[i][j].option;
           front.appendChild(option);
         }
-        front.style.backgroundImage =  "url('../images/hk/" + imageCount + ".png')";
+
+        var imagePath = "file:///Users/amysimmons/memory/images/hk/";
+        front.style.backgroundImage =  "url('" + imagePath + imageCount + ".png')";
         imageCount++;
 
         var back = document.createElement('div');
