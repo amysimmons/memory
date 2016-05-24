@@ -154,7 +154,7 @@ Game = {
           front.appendChild(option);
         }
 
-        var imagePath = "file:///Users/amysimmons/memory/images/hk/";
+        var imagePath = "images/hk/";
         front.style.backgroundImage =  "url('" + imagePath + imageCount + ".png')";
         imageCount++;
 
