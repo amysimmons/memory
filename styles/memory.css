@@ -166,3 +166,41 @@ footer .social-icons a {
 .strikethrough{
   text-decoration: line-through;
 }
+
+/*tablet*/
+@media screen and (max-width: 1023px){
+  .game-container{
+    width: 90%;
+  }
+  .tile {
+    height: 130px;
+  }
+}
+
+/*mobile*/
+@media screen and (max-width: 767px){
+  .game-container{
+    padding: 1em;
+    width: 100%;
+  }
+
+  .tile{
+    height: 80px;
+    width: 23%;
+  }
+
+  .tile p{
+    margin-top: 0px;
+    font-size: 15px;
+  }
+
+  input[type="text"] {
+    padding: 0;
+    border: 2px solid #000;
+    font-size: 12px;
+  }
+
+  .giphy-option-other {
+    margin-bottom: -10px;
+  }
+}
