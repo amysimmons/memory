@@ -1,18 +1,21 @@
-About
+#About
 
-I started building Memory on an eight-hour flight from Sydney to Hong Kong. I was about to embark on a week-long holiday with two girlfriends - so why not build a game about memories!
+I started building Memory on an eight-hour flight from Sydney to Hong Kong.
 
-I use the Giphy API as sources for the cards. I use a Node Express server on the back end.
+I was about to embark on a week-long holiday with two girlfriends - so why not build a game about memories!
+
+I use the Giphy API as sources for the cards.
 
 I took the photo covering the front of the cards in Soho, Central Hong Kong.
 
 
-Sources
+#Sources
 
-http://callmenick.com/_development/transitions-transforms-animations/1-flipping-card/
-http://expressjs.com/
-https://www.instagram.com/developer/authentication/
-https://www.npmjs.com/package/instagram-node
-https://www.npmjs.com/package/cookie-session
-Devtool for debugging
+- http://callmenick.com/_development/transitions-transforms-animations/1-flipping-card/
+- http://expressjs.com/
+- https://www.instagram.com/developer/authentication/
+- https://www.npmjs.com/package/instagram-node
+- https://www.npmjs.com/package/cookie-session
+
+Devtool for debugging:
 devtool src/server.js
